@@ -1,0 +1,4 @@
+#!/bin/bash
+cd alu; ./clean; cd ..
+cd alu_pb; ./clean; cd ..
+cd proc; ./clean; cd ..

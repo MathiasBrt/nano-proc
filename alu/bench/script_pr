@@ -1,0 +1,8 @@
+#!/bin/bash
+vcom -work lib_nanoproc_bench cfg_bench_system_pr.vhd
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+
+

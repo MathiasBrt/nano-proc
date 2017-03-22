@@ -1,0 +1,7 @@
+#!/bin/bash
+source config_env
+source config_modelsim
+rm -rf cycloneii
+vlib cycloneii
+vcom -work cycloneii /softslin/quartus81/quartus/eda/sim_lib/cycloneii_atoms.vhd
+vcom -work cycloneii /softslin/quartus81/quartus/eda/sim_lib/cycloneii_components.vhd

@@ -1,0 +1,31 @@
+#!/bin/bash
+cd config; source config_modelsim; cd ..;
+cd vhd; ./script; 
+if [ "$?" != 0 ]
+then exit -1
+fi
+cd ..;
+
+cd bench; ./script; 
+if [ "$?" != 0 ]
+then exit -1
+fi
+cd ..;
+
+cd synth; ./script; 
+if [ "$?" != 0 ]
+then exit -1
+fi
+cd ..;
+
+cd pr; ./script; 
+if [ "$?" != 0 ]
+then exit -1
+fi
+cd ..;
+
+cd bench; ./script_pr; 
+if [ "$?" != 0 ]
+then exit -1
+fi
+cd ..;

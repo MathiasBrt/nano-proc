@@ -1,0 +1,2 @@
+export MODELSIM=$HOME/nano-proc/lib_altera/modelsim.ini
+

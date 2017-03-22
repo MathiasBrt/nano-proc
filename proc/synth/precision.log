@@ -1,0 +1,151 @@
+# Info: [9566]: Logging session transcript to file /tp2/xph1se/xph1se00/nano-proc/proc/synth/precision.log
+//  Precision RTL Synthesis 2008a.42 (Production Release) Mon Sep 15 00:06:41 PDT 2008
+//  
+//  Copyright (c) Mentor Graphics Corporation, 1996-2008, All Rights Reserved.
+//             Portions copyright 1991-2004 Compuware Corporation
+//                       UNPUBLISHED, LICENSED SOFTWARE.
+//            CONFIDENTIAL AND PROPRIETARY INFORMATION WHICH IS THE
+//          PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS LICENSORS
+//  
+//  Running on Linux xph1se00@cimepc84 #1 SMP Sat Oct 8 19:11:43 CDT 2005 2.6.9-22.ELsmp i686
+//  
+//  Start time Mon Jul  5 10:15:00 2010
+# -------------------------------------------------
+# Info: [9566]: Logging session transcript to file /tp2/xph1se/xph1se00/nano-proc/proc/synth/precision.log
+# 
+# COMMAND: dofile synth_nanoproc.tcl
+# Info: [9540]: Saved project file: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc.psp.
+# Info: [9574]: Input directory: /tp2/xph1se/xph1se00/nano-proc/proc/synth/
+# Info: [9569]: Moving session transcript to file /tp2/xph1se/xph1se00/nano-proc/proc/synth/precision.log
+# Info: [9555]: Created project /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc.psp in folder /tp2/xph1se/xph1se00/nano-proc/proc/synth/.
+# Info: [9531]: Created directory: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_impl/.
+# Info: [9540]: Saved project file: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc.psp.
+# Info: [9539]: Saved implementation file: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_impl/project_nanoproc_impl.psi.
+# Info: [9554]: Created implementation project_nanoproc_impl in project /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc.psp.
+# Info: [9531]: Created directory: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_temp_1/.
+# Info: [9575]: Results directory: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_temp_1/
+# Info: [9565]: Appending project transcript to file /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_temp_1/precision.log
+# Info: [9550]: Activated implementation project_nanoproc_impl in project /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc.psp.
+# Info: [15291]:  Setting up the design to use synthesis library "cycloneii.syn"
+# Info: [566]: The global max fanout is currently set to 1000 for Altera - Cyclone II.
+# Info:  Setting Part to: "EP2C20F484C"
+# Info:  Setting Process to: "7"
+# Info: [3021]: Reading file: /softslin/precision2008a42/Mgc_home/pkgs/psr/techlibs/cycloneii.syn.
+# Info: [618]: Loading library initialization file /softslin/precision2008a42/Mgc_home/pkgs/psr/userware/yeager_rename.tcl
+# Info: [40000]: vhdlorder, Release 2008a.17
+# Info: [40000]: Files sorted successfully.
+# Info: [40000]: hdl-analyze, Release RTLC-Precision 2008a.17
+# Info: [42502]: Analyzing input file "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/dec3to8.vhd" ...
+# Info: [42502]: Analyzing input file "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/nano_pkg.vhd" ...
+# Info: [42502]: Analyzing input file "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/alu.vhd" ...
+# Info: [42502]: Analyzing input file "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/addsub.vhd" ...
+# Info: [42502]: Analyzing input file "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/port_io.vhd" ...
+# Info: [42502]: Analyzing input file "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/proc.vhd" ...
+# Info: [42502]: Analyzing input file "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/ram.vhd" ...
+# Info: [42502]: Analyzing input file "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/rom.vhd" ...
+# Info: [42502]: Analyzing input file "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/rom_digit.vhd" ...
+# Info: [42502]: Analyzing input file "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/system_proc.vhd" ...
+# Info: [42502]: Analyzing input file "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/system.vhd" ...
+# Info: [42502]: Analyzing input file "/tp2/xph1se/xph1se00/nano-proc/proc/synth/cfg_synth_system.vhd" ...
+# Warning: [15255]: Multiple tops found: ADDSUB
+# Info:      cfg_synth_system
+# Info: [643]: Top module of the design is set to: cfg_synth_system.
+# Info: [641]: Current working directory: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_temp_1/.
+# Info: [40000]: RTLC-Driver, Release RTLC-Precision 2008a.17
+# Info: [40000]: Last compiled on Aug  5 2008 21:24:43
+# Info: [44512]: Initializing...
+# Info: [44504]: Partitioning design ....
+# Info: [40000]: RTLCompiler, Release RTLC-Precision 2008a.17
+# Info: [40000]: Last compiled on Aug  5 2008 21:31:05
+# Info: [44512]: Initializing...
+# Info: [44522]: Root Module work.SYSTEM(a){configuration cfg_synth_system}: Pre-processing...
+# Info: [44506]: Module work.SYSTEM_PROC(a){configuration cfg_synth_system, block config #1}: Pre-processing...
+# Info: [44506]: Module work.PROC(behavior): Pre-processing...
+# Info: [45143]: "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/proc.vhd", line 33: Enumerated type STATE with 5 elements encoded as onehot.
+# Info: [45144]: Encodings for STATE values.
+# Info: [40000]: value                              	                         STATE[4-0]
+# Info: [40000]: fetch1                             	                         ----1
+# Info: [40000]: fetch2                             	                         ---1-
+# Info: [40000]: exe_1                              	                         --1--
+# Info: [40000]: exe_2                              	                         -1---
+# Info: [40000]: exe_3                              	                         1----
+# Info: [44506]: Module work.DEC3TO8(behavior): Pre-processing...
+# Info: [44506]: Module work.ALU(behavior): Pre-processing...
+# Info: [45144]: Extracted FSM in module work.PROC(behavior), with state variable = p_state[4:0], async set/reset state(s) = (none), number of states = 5.
+# Info: [45144]: Re-encoding 5 state FSM as "onehot".
+# Info: [45144]: FSM: State encoding table.
+# Info: [40000]: FSM:	Index	     State Name	                            Literal	                      Encoding
+# Info: [40000]: FSM:	    0	         fetch1	                              00001	                         00001
+# Info: [40000]: FSM:	    1	         fetch2	                              00010	                         00010
+# Info: [40000]: FSM:	    2	          exe_1	                              00100	                         00100
+# Info: [40000]: FSM:	    3	          exe_2	                              01000	                         01000
+# Info: [40000]: FSM:	    4	          exe_3	                              10000	                         10000
+# Info: [44506]: Module work.RAM(A){generic map (add_bits => 6 data_bits => 16)}: Pre-processing...
+# Info: [45251]: Built-in hardware memory core inferred for variable ': ram.mem depth = 64, width = 16'.
+# Info: [44506]: Module work.ROM(arch_prog_0): Pre-processing...
+# Info: [45251]: Built-in hardware memory core inferred for variable ': ROM.MY_ROM depth = 128, width = 16'.
+# Info: [44506]: Module work.PORT_IO(A): Pre-processing...
+# Info: [44506]: Module work.ROM_DIGIT(A): Pre-processing...
+# Info: [45251]: Built-in hardware memory core inferred for variable ': ROM_DIGIT.MY_ROM depth = 16, width = 8'.
+# Info: [45144]: Extracted FSM in module work.SYSTEM(a){configuration cfg_synth_system}, with state variable = Current_State[1:0], async set/reset state(s) = (none), number of states = 3.
+# Info: [45144]: Preserving the original encoding in 3 state FSM
+# Info: [45144]: FSM: State encoding table.
+# Info: [40000]: FSM:	Index	     State Name	                            Literal	                      Encoding
+# Info: [40000]: FSM:	    0	             S0	                                 00	                            00
+# Info: [40000]: FSM:	    1	             S1	                                 01	                            01
+# Info: [40000]: FSM:	    2	             S2	                                 10	                            10
+# Warning: [45729]: "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/proc.vhd", line 61: signal Yreg has never been used.
+# Warning: [45729]: "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/system.vhd", line 45: signal syst_out[31:24] has never been used.
+# Warning: [45729]: "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/system.vhd", line 45: signal syst_out[15:8] has never been used.
+# Info: [44508]: Module work.DEC3TO8(behavior): Compiling...
+# Info: [44508]: Module work.ALU(behavior): Compiling...
+# Info: [44508]: Module work.PROC(behavior): Compiling...
+# Warning: [45784]: "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/proc.vhd", line 206: Module work.PROC(behavior), Net(s) Xreg[0:7]: Signal(s) not part of the sensitivity list of this block, are being read. This may lead to simulation mismatch.
+# Info: [44508]: Module work.RAM(A){generic map (add_bits => 6 data_bits => 16)}: Compiling...
+# Info: [44508]: Module work.ROM(arch_prog_0): Compiling...
+# Info: [44508]: Module work.PORT_IO(A): Compiling...
+# Info: [44508]: Module work.SYSTEM_PROC(a){configuration cfg_synth_system, block config #1}: Compiling...
+# Info: [44508]: Module work.ROM_DIGIT(A): Compiling...
+# Info: [44523]: Root Module work.SYSTEM(a){configuration cfg_synth_system}: Compiling...
+# Warning: [45735]: "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/proc.vhd", line 17: Net Rad_out[6:0] has no drivers after Optimization. Connecting it to a disabled tristate
+# Warning: [45735]: "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/rom.vhd", line 11: Net output[7:6] has no drivers after Optimization. Connecting it to a disabled tristate
+# Warning: [45735]: "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/rom.vhd", line 11: Net output[4:0] has no drivers after Optimization. Connecting it to a disabled tristate
+# Warning: [45735]: "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/port_io.vhd", line 25: Net out_io[23:16] has no drivers after Optimization. Connecting it to a disabled tristate
+# Info: [45252]: "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/rom.vhd", line 21: Inferred rom instance 'rtlcI4' of type 'rom_9_7_128_42'.
+# Warning: [45735]: "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/system_proc.vhd", line 18: Net io_out[23:16] has no drivers after Optimization. Connecting it to a disabled tristate
+# Info: [45252]: "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/rom_digit.vhd", line 29: Inferred rom instance 'rtlcI5' of type 'rom_7_4_16_43'.
+# Info: [45252]: "/tp2/xph1se/xph1se00/nano-proc/proc/synth/../vhd/rom_digit.vhd", line 29: Inferred rom instance 'rtlcI6' of type 'rom_7_4_16_43'.
+# Info: [44842]: Compilation successfully completed.
+# Info: [44841]: Counter Inferencing === Detected : 1, Inferred (Modgen/Selcounter/AddSub) : 0 (0 / 0 / 0), AcrossDH (Merged/Not-Merged) : (0 / 0), Not-Inferred (Acrossdh/Attempted) : (0 / 0), Local Vars : 1 ===
+# Info: [44835]: Total CPU time taken for compilation: 1.0 secs.
+# Info: [44856]: Total lines of RTL compiled: 732.
+# Info: [44513]: Overall running time 8.0 secs.
+# Info: [641]: Current working directory: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_temp_1/.
+# Info: [644]: Finished compiling design.
+# Info: [641]: Current working directory: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_temp_1/.
+# Info: [4552]: 2 Instances are flattened in hierarchical block .work.PROC.behavior_unfolded0_unfold_3314.
+# Info: [4552]: 2 Instances are flattened in hierarchical block .work.cfg_synth_system_1-SYSTEM_PROC.a_unfolded0_unfold_1226.
+# Info: [15002]: Optimizing design view:.work.PROC.behavior_unfolded0_unfold_3314
+# Info: [15002]: Optimizing design view:.work.cfg_synth_system_1-SYSTEM_PROC.a_unfolded0_unfold_1226
+# Info: [15002]: Optimizing design view:.work.SYSTEM.a
+# Info: [607]: Timing information and timing constraints are not present.
+# Info: -- Saving the design database in /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_temp_1/system.xdb
+# Info: [3026]: Writing file: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_temp_1/system.edf.
+# Info: Info, Writing xrf file '/tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_temp_1/system.xrf'
+# Info: [3026]: Writing file: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_temp_1/system.xrf.
+# Info: -- Writing file /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_temp_1/system.tcl
+# Info: exq_pr_compile_project gen_vcf system 1
+# Info: [644]: Finished synthesizing design.
+# Info: [11019]: Total CPU time taken for synthesis: 10.9 secs.
+# Info: [11020]: Overall running time 12.7 secs.
+# Info: [9540]: Saved project file: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc.psp.
+# Info: [9539]: Saved implementation file: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_temp_1/project_nanoproc_impl.psi.
+# Info: [9531]: Created directory: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc_impl/.
+# Info: [9562]: Saved implementation project_nanoproc_impl in project /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc.psp.
+dofile synth_nanoproc.tcl
+# 
+# COMMAND: exit -force
+# Info: [9540]: Saved project file: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc.psp.
+# Info: [9530]: Closed project: /tp2/xph1se/xph1se00/nano-proc/proc/synth/project_nanoproc.psp.
+close_project -discard
+exit -force

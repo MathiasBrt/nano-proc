@@ -1,0 +1,55 @@
+#!/bin/bash
+rm -r $MODELSIM_LIBS/lib_nanoproc
+vlib $MODELSIM_LIBS/lib_nanoproc
+vcom -work lib_nanoproc nano_pkg.vhd
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+vcom -work lib_nanoproc dec3to8.vhd
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+vcom -work lib_nanoproc alu.vhd
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+vcom -work lib_nanoproc proc.vhd
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+vcom -work lib_nanoproc rom.vhd
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+vcom -work lib_nanoproc rom_digit.vhd
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+vcom -work lib_nanoproc ram.vhd
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+vcom -work lib_nanoproc port_io.vhd
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+vcom -work lib_nanoproc system_proc.vhd
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+vcom -work lib_nanoproc system.vhd
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+
+

@@ -1,0 +1,12 @@
+#!/bin/bash
+quartus_pgm -l
+IFS=$'\n'
+index=0
+for i in `quartus_pgm -l | grep "Blaster \[" | sed -e 's/[0-9]) //g'`
+do
+	array[$index]=$i
+	index=$(($index+1)) #`expr $index+1`
+done
+last=$((${#array[@]}-1))  #`expr ${#array[@]}-1`
+echo ${array[$last]}
+quartus_pgm --"cable=${array[$last]}" --mode=JTAG --operation="p;system.sof"

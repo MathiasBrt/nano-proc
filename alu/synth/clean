@@ -1,0 +1,5 @@
+#!/bin/bash
+rm *~
+rm -rf project_*
+rm *.psp
+rm *.log

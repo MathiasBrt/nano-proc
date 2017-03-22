@@ -1,0 +1,47 @@
+#!/bin/bash
+./clean
+
+cp ../synth/project_nanoproc_impl/system.edf .
+quartus_sh -t system.tcl
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+quartus_map system
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+quartus_fit system
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+quartus_asm system
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+quartus_tan system --fast_model --tao=min.tao
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+quartus_tan system --tao=max.tao
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+quartus_eda system --simulation --tool=modelsim --format=vhdl
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+rm -rf $MODELSIM_LIBS/lib_nanoproc_pr
+vlib $MODELSIM_LIBS/lib_nanoproc_pr
+vcom -work lib_nanoproc_pr ./simulation/modelsim/system.vho
+if [ "$?" != 0 ]
+then exit -1
+fi
+
+

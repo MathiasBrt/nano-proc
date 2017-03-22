@@ -1,0 +1,8 @@
+#!/bin/bash
+cd bench; ./clean; cd ..
+cd lib; ./clean; cd ..
+cd pr; ./clean; cd ..
+cd synth; ./clean; cd ..
+cd vhd; ./clean; cd ..
+rm ./*~
+rm transcript *.wlf

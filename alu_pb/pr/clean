@@ -1,0 +1,3 @@
+#!/bin/bash
+rm -rf db incremental_db *.tao *.rpt *.summary *.qpf *.qsf *~ *.smsg *.pin *.pof *.sof *~ *.edf simulation
+
