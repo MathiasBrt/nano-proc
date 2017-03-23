@@ -49,15 +49,25 @@ architecture behavior of PROC is
   signal R_ld				: std_logic_vector(0 to 7); 			-- selection registres R()
   signal Ra_ld,Rg_ld,Ri_ld : std_logic;
   signal Rd_ld,Rad_ld	: std_logic;
+  signal Rd_n_ld,Rd_s_ld,Rd_e_ld,Rd_w_ld: std_logic;    -- selection registres
+                                                        -- pour send_bloc
 
 -- sorties registres									
   signal R_q,R_d 		: REGISTER_FILE(0 to 7); 
   signal Ra_q,Ra_d	: std_logic_vector(len_data_bus-1 downto 0);
   signal Rg_q,Rg_d	: std_logic_vector(len_data_bus-1 downto 0);
-  signal Ri_q,Ri_d 	: std_logic_vector(9 downto 0); 	-- registre instruction 10 bits
+  signal Ri_q,Ri_d 	: std_logic_vector(10 downto 0); 	-- registre instruction 10 bits
   signal Rd_q,Rd_d	: std_logic_vector(len_data_bus-1 downto 0); 
   signal Rad_q,Rad_d	: std_logic_vector(len_addr_bus-1 downto 0); 
   signal Rw_q,Rw_d		: std_logic;				-- registre simple pour signal write externe
+  signal Rd_n_d,Rd_n_q : std_logic_vector(len_data_bus-1 downto 0);
+  signal Rd_s_d,Rd_s_q : std_logic_vector(len_data_bus-1 downto 0);
+  signal Rd_e_d,Rd_e_q : std_logic_vector(len_data_bus-1 downto 0);
+  signal Rd_w_d,Rd_w_q : std_logic_vector(len_data_bus-1 downto 0);
+  signal Rw_n_q,Rw_n_d		: std_logic;
+  signal Rw_s_q,Rw_s_d		: std_logic;
+  signal Rw_e_q,Rw_e_d		: std_logic;
+  signal Rw_w_q,Rw_w_d		: std_logic;
   signal Xreg,Yreg 	: std_logic_vector(0 to 7); 			-- selection registres
 
   signal mux_sel	: std_logic_vector(3 downto 0);	-- selection registres R(), A, G, I dans mux
@@ -69,22 +79,27 @@ architecture behavior of PROC is
 
 -- constant zero 		: natural :=0; -- test de nullite de G
 
-  constant i_mv 		: std_logic_vector(3 downto 0) := "0000"; -- liste des codes instructions
-  constant i_ldi 		: std_logic_vector(3 downto 0) := "0001";
-  constant i_add 		: std_logic_vector(3 downto 0) := "0010";
-  constant i_sub 		: std_logic_vector(3 downto 0) := "0011";
-  constant i_ld 		: std_logic_vector(3 downto 0) := "0100";
-  constant i_st 		: std_logic_vector(3 downto 0) := "0101";
-  constant i_mvnz 	: std_logic_vector(3 downto 0) := "0110";
-  constant i_mvgt 	: std_logic_vector(3 downto 0) := "0111";
-  constant i_and	 	: std_logic_vector(3 downto 0) := "1000";
-  constant i_bra	 	: std_logic_vector(3 downto 0) := "1001";
-  constant i_brnz	 	: std_logic_vector(3 downto 0) := "1010";
-  constant i_brgt	 	: std_logic_vector(3 downto 0) := "1011";
-  constant i_brz	 	: std_logic_vector(3 downto 0) := "1100";
-  constant i_brmi	 	: std_logic_vector(3 downto 0) := "1101";
+  constant i_mv 		: std_logic_vector(4 downto 0) := "00000"; -- liste des codes instructions
+  constant i_ldi 		: std_logic_vector(4 downto 0) := "00001";
+  constant i_add 		: std_logic_vector(4 downto 0) := "00010";
+  constant i_sub 		: std_logic_vector(4 downto 0) := "00011";
+  constant i_ld 		: std_logic_vector(4 downto 0) := "00100";
+  constant i_st 		: std_logic_vector(4 downto 0) := "00101";
+  constant i_mvnz 	: std_logic_vector(4 downto 0) := "00110";
+  constant i_mvgt 	: std_logic_vector(4 downto 0) := "00111";
+  constant i_and	 	: std_logic_vector(4 downto 0) := "01000";
+  constant i_bra	 	: std_logic_vector(4 downto 0) := "01001";
+  constant i_brnz	 	: std_logic_vector(4 downto 0) := "01010";
+  constant i_brgt	 	: std_logic_vector(4 downto 0) := "01011";
+  constant i_brz	 	: std_logic_vector(4 downto 0) := "01100";
+  constant i_brmi	 	: std_logic_vector(4 downto 0) := "01101";
+  constant i_sendn 	: std_logic_vector( 4 downto 0 ) := "10001";
+  constant i_sends 	: std_logic_vector( 4 downto 0 ) := "10010";
+  constant i_sende 	: std_logic_vector( 4 downto 0 ) := "10100";
+  constant i_sendw 	: std_logic_vector( 4 downto 0 ) := "11000";
+  constant i_rcv 	: std_logic_vector( 4 downto 0 ) := "01111";
 
-  constant i_name	: INST := ("mv  ","ldi ","add ","sub ","ld  ","st  ","mvnz","mvgt","and ","bra ","brnz","brgt","brz ","brmi");
+  constant i_name	: INST := ("mv  ","ldi ","add ","sub ","ld  ","st  ","mvnz","mvgt","and ","bra ","brnz","brgt","brz ","brmi","sendn","sends","sende","sendw","rcv");
 
 -- Table de constantes pour le multiplexeur
 -- codes de 0000 à 0111 : nanobus <= R_q() (PC = 0111)
@@ -112,6 +127,10 @@ BEGIN
     if (clk'event and clk = '1') then
       if resetn='0' then  -- raz general
         Rw_q 	<='0';
+        Rw_n_q  <= '0';
+        Rw_s_q  <= '0';
+        Rw_e_q  <= '0';
+        Rw_w_q  <= '0';
         Ra_q 	<=(others=>'0');
         for i in 0 to 7 loop
           R_q(i)<=(others=>'0');
@@ -120,6 +139,10 @@ BEGIN
         Rad_q	<=(others=>'0');
         Ri_q	<=(others=>'0');
         Rg_q	<=(others=>'0');
+        Rd_n_q  <=(others=>'0');
+        Rd_s_q  <=(others=>'0');
+        Rd_e_q  <=(others=>'0');
+        Rd_w_q  <=(others=>'0');
         p_state 	<=fetch1;
       else
         p_state 	<=p_next_state;
@@ -129,6 +152,14 @@ BEGIN
         Rad_q	<=Rad_d;
         Ri_q	<=Ri_d;
         Rg_q	<=Rg_d;
+        Rd_n_q  <= Rd_n_d;
+        Rd_s_q  <= Rd_s_d;
+        Rd_e_q  <= Rd_e_d;
+        Rd_w_q  <= Rd_w_d;
+        Rw_n_q <= Rw_n_d;
+        Rw_s_q <= Rw_s_d;
+        Rw_e_q <= Rw_e_q;
+        Rw_w_q <= Rw_w_d;
         Rw_q	<= Rw_d;
       end if;
     end if;
@@ -138,7 +169,7 @@ BEGIN
 -- connexion des registres avec entrees de validation
 
   reg_p : Process(DIN,nanobus,res_alu,incr_pc,R_ld,R_q,Ra_ld,Ra_q,Rw_q,br_pc,offset_pc,
-                  Rd_ld,Rd_q, Ri_ld,Ri_q, Rad_ld,Rad_q,Rg_ld,Rg_q)
+                  Rd_ld,Rd_q, Ri_ld,Ri_q, Rad_ld,Rad_q,Rg_ld,Rg_q,Rd_n_q,Rd_s_q,Rd_e_q,Rd_w_q)
   Begin
     
     -- fonction banc de registres et autres registres
@@ -156,10 +187,17 @@ BEGIN
     Rad_d	<= Rad_q;
     if Rad_ld='1' then 	Rad_d <= nanobus(len_addr_bus-1 downto 0); end if;
     Ri_d		<= Ri_q;
-    if Ri_ld='1' then 	Ri_d	<= din(9 downto 0); end if;
+    if Ri_ld='1' then 	Ri_d	<= din(10 downto 0); end if;
     Rg_d		<= Rg_q;
     if Rg_ld='1' then 	Rg_d	<= res_alu; end if;
-    
+    Rd_n_d <= Rd_n_q;
+    if Rd_n_ld='1' then Rd_n_d <=nanobus; end if;
+    Rd_s_d <= Rd_s_q;
+    if Rd_s_ld='1' then Rd_s_d <=nanobus; end if;
+    Rd_e_d <= Rd_e_q;
+    if Rd_e_ld='1' then Rd_e_d <=nanobus; end if;
+    Rd_w_d <= Rd_w_q;
+    if Rd_w_ld='1' then Rd_w_d <=nanobus; end if;
     Rd_out	<= Rd_q;
     Rad_out	<= Rad_q;
     I 			<= Ri_q(9 downto 6);
@@ -296,6 +334,10 @@ BEGIN
               br_pc<='1';		-- valide calcul PC + offset_PC
             end if;
             p_next_state <= fetch1;
+          when i_sendn =>
+          when i_sends =>
+          when i_sende =>
+          when i_sendw =>
           when others =>
         end case;
 	
@@ -326,6 +368,11 @@ BEGIN
             Rg_ld<='1';		-- ecriture Rx-A dans REG G
             alu_code<=alu_and;	-- selection and
             p_next_state <= exe_3;
+          when i_sendn =>
+          when i_sends =>
+          when i_sende =>
+          when i_sendw =>
+
           when others =>
         end case;
       when exe_3 =>
