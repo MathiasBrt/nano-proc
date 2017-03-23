@@ -4,12 +4,6 @@ use ieee.numeric_std.all;
 
 entity flip_flop_1bit is
   
-  generic (
-    RNW  : integer := 3;
-    OCW  : integer  := 5;
-    ACW  : integer  := 2;
-    IBSW : integer  := 4);
-
   port (
     clk      : in  std_logic;
     rst      : in  std_logic;

@@ -3,17 +3,13 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.NUMERIC_STD.ALL;
 
 entity STD_FIFO is
-  Generic (
-    constant DW  : positive := 16;
-    constant FIFO_DEPTH	: positive := 10
-    );
   Port ( 
     CLK		: in  STD_LOGIC;
     rst		: in  STD_LOGIC;
     WriteEn	: in  STD_LOGIC;
-    DataIn	: in  STD_LOGIC_VECTOR (DW - 1 downto 0);
+    DataIn	: in  STD_LOGIC_VECTOR (len_data_bus - 1 downto 0);
     ReadEn	: in  STD_LOGIC;
-    DataOut	: out STD_LOGIC_VECTOR (DW - 1 downto 0);
+    DataOut	: out STD_LOGIC_VECTOR (len_data_bus - 1 downto 0);
     Empty	: out STD_LOGIC;
     Full	: out STD_LOGIC
     );
@@ -25,11 +21,11 @@ begin
   
   -- Memory Pointer Process
   fifo_proc : process (CLK)
-    type FIFO_Memory is array (0 to FIFO_DEPTH - 1) of STD_LOGIC_VECTOR (DW - 1 downto 0);
+    type FIFO_Memory is array (0 to fifo_depth - 1) of STD_LOGIC_VECTOR (len_data_bus - 1 downto 0);
     variable Memory : FIFO_Memory;
     
-    variable Head : natural range 0 to FIFO_DEPTH - 1;
-    variable Tail : natural range 0 to FIFO_DEPTH - 1;
+    variable Head : natural range 0 to fifo_depth - 1;
+    variable Tail : natural range 0 to fifo_depth - 1;
     -- looped = true si head boucle, false si tail boucle
     variable Looped : boolean;
   begin
@@ -49,7 +45,7 @@ begin
             DataOut <= Memory(Tail);
             
                                         -- Update Tail pointer as needed
-            if (Tail = FIFO_DEPTH - 1) then
+            if (Tail = fifo_depth - 1) then
               Tail := 0;
               
               Looped := false;
@@ -67,7 +63,7 @@ begin
             Memory(Head) := DataIn;
             
                                         -- Increment Head pointer as needed
-            if (Head = FIFO_DEPTH - 1) then
+            if (Head = fifo_depth - 1) then
               Head := 0;
               
               Looped := true;

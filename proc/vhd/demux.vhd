@@ -3,28 +3,23 @@ use ieee.std_logic_1164.all ;
 use ieee.numeric_std.all;
 
 entity demux is
-  
-  generic (
-    AW  : integer := 8;   -- Address Width
-    DW  : integer := 16   -- Data Width
-    );
   port (
   
-      data_in  :     in std_logic_vector(DW-1 downto 0);  -- input data
+      data_in  :     in std_logic_vector(len_data_bus-1 downto 0);  -- input data
       demux_ctrl : 	in std_logic_vector(1 downto 0);  -- control bits
-      if_north : 		out std_logic_vector(DW-1 downto 0);  -- north interface
-      if_south :     out std_logic_vector(DW-1 downto 0); -- south interface
-      if_east  :     out std_logic_vector(DW-1 downto 0); -- east interface
-      if_west  :     out std_logic_vector(DW-1 downto 0)); -- west interface
+      if_north : 		out std_logic_vector(len_data_bus-1 downto 0);  -- north interface
+      if_south :     out std_logic_vector(len_data_bus-1 downto 0); -- south interface
+      if_east  :     out std_logic_vector(len_data_bus-1 downto 0); -- east interface
+      if_west  :     out std_logic_vector(len_data_bus-1 downto 0)); -- west interface
 
     end demux;
 
     architecture dmux of demux is
 	 
-	 SIGNAL if_north_sig 	: std_logic_vector(DW-1 downto 0);
-	 SIGNAL if_south_sig 	: std_logic_vector(DW-1 downto 0);
-	 SIGNAL if_east_sig 	: std_logic_vector(DW-1 downto 0);
-	 SIGNAL if_west_sig 	: std_logic_vector(DW-1 downto 0);
+	 SIGNAL if_north_sig 	: std_logic_vector(len_data_bus-1 downto 0);
+	 SIGNAL if_south_sig 	: std_logic_vector(len_data_bus-1 downto 0);
+	 SIGNAL if_east_sig 	: std_logic_vector(len_data_bus-1 downto 0);
+	 SIGNAL if_west_sig 	: std_logic_vector(len_data_bus-1 downto 0);
 	 
 	 begin
 	 

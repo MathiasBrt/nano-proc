@@ -14,7 +14,7 @@ package NANO_PKG is
 	constant alu_add : std_logic_vector(1 downto 0) := "00"; -- liste des codes alu
 	constant alu_sub : std_logic_vector(1 downto 0) := "01"; 
 	constant alu_and : std_logic_vector(1 downto 0) := "10"; 
-
+        constant fifo_depth : integer :=10;
 
 
 end NANO_PKG;

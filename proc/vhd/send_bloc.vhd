@@ -31,12 +31,6 @@ end send;
 architecture NSEW_send of send is
 
   component flip_flop_1bit
-    generic (
-      RNW  : integer := 3;
-      OCW  : integer := 5;
-      ACW  : integer := 2;
-      IBSW : integer := 4);
-    
     port (
       clk          : in std_logic;      -- rst
       rst          : in std_logic;
@@ -47,12 +41,6 @@ architecture NSEW_send of send is
   end component;
 
   component flip_flop_16bits
-    generic (
-      RNW  : integer := 3;
-      OCW  : integer := 5;
-      ACW  : integer := 2;
-      IBSW : integer := 4);
-    
     port (
       clk          : in std_logic;      
       rst          : in std_logic;
@@ -66,11 +54,6 @@ architecture NSEW_send of send is
 begin  -- NSEW_send
 
   U1 : flip_flop_16bits
-  generic map (
-    RNW  => 3,
-    OCW  => 5,
-    ACW  => 2,
-    IBSW => 4)
     port map (
       clk      => clk,
       rst      => rst,
@@ -78,11 +61,6 @@ begin  -- NSEW_send
       enable   => WR_EN_North,
       data_out => data_out_north);
   U2 : flip_flop_1bit
-    generic map (
-      RNW  => 3,
-      OCW  => 5,
-      ACW  => 2,
-      IBSW => 4)
     port map (
       clk      => clk,
       rst      => rst,
@@ -90,11 +68,6 @@ begin  -- NSEW_send
       data_out => ctrl_fifo_North);
 
      U3 : flip_flop_16bits
-  generic map (
-    RNW  => 3,
-    OCW  => 5,
-    ACW  => 2,
-    IBSW => 4)
     port map (
       clk      => clk,
       rst      => rst,
@@ -102,11 +75,6 @@ begin  -- NSEW_send
       enable   => WR_EN_South,
       data_out => data_out_south);
   U4 : flip_flop_1bit
-    generic map (
-      RNW  => 3,
-      OCW  => 5,
-      ACW  => 2,
-      IBSW => 4)
     port map (
       clk      => clk,
       rst      => rst,
@@ -115,11 +83,6 @@ begin  -- NSEW_send
 
 
      U5 : flip_flop_16bits
-  generic map (
-    RNW  => 3,
-    OCW  => 5,
-    ACW  => 2,
-    IBSW => 4)
     port map (
       clk      => clk,
       rst      => rst,
@@ -127,11 +90,6 @@ begin  -- NSEW_send
       enable   => WR_EN_East,
       data_out => data_out_east);
   U6 : flip_flop_1bit
-    generic map (
-      RNW  => 3,
-      OCW  => 5,
-      ACW  => 2,
-      IBSW => 4)
     port map (
       clk      => clk,
       rst      => rst,
@@ -141,11 +99,6 @@ begin  -- NSEW_send
 
 
      U7 : flip_flop_16bits
-  generic map (
-    RNW  => 3,
-    OCW  => 5,
-    ACW  => 2,
-    IBSW => 4)
     port map (
       clk      => clk,
       rst      => rst,
@@ -153,11 +106,6 @@ begin  -- NSEW_send
       enable   => WR_EN_West,
       data_out => data_out_west);
   U8 : flip_flop_1bit
-    generic map (
-      RNW  => 3,
-      OCW  => 5,
-      ACW  => 2,
-      IBSW => 4)
     port map (
       clk      => clk,
       rst      => rst,
