@@ -14,7 +14,15 @@ entity PROC IS
                         resetn, clk 		: in std_logic;
                         write 					: out std_logic;
                         Rd_out	 				: out std_logic_vector(len_data_bus-1 downto 0);
-                        Rad_out 				: out std_logic_vector(len_addr_bus-1 downto 0));
+                        Rad_out 				: out std_logic_vector(len_addr_bus-1 downto 0);
+                        send_out_n : out std_logic_vector(len_data_bus-1 downto 0);
+                        send_out_s : out std_logic_vector(len_data_bus-1 downto 0);
+                        send_out_e : out std_logic_vector(len_data_bus-1 downto 0);
+                        send_out_w : out std_logic_vector(len_data_bus-1 downto 0);
+                        north_en : out std_logic;
+                        south_en : out std_logic;
+                        east_en : out std_logic;
+                        west_en : out std_logic);
 end PROC;
 
 architecture behavior of PROC is
@@ -30,7 +38,7 @@ architecture behavior of PROC is
                 r 				: out std_logic_vector(len_data_bus-1 downto 0));
   end component;
 
-  type STATE is (fetch1,fetch2,exe_1,exe_2,exe_3); 		-- Etats du processeur
+  type STATE is (fetch1,fetch2,exe_1,exe_2,exe_3,exe_4); 		-- Etats du processeur
   type INST is array (0 to 13) of string(1 to 4);			-- liste jeu instructions
 
 
@@ -49,13 +57,37 @@ architecture behavior of PROC is
   signal R_ld				: std_logic_vector(0 to 7); 			-- selection registres R()
   signal Ra_ld,Rg_ld,Ri_ld : std_logic;
   signal Rd_ld,Rad_ld	: std_logic;
-  signal north_en,south_en,east_en,west_en: std_logic;    -- selection registr
-                                                        -- pour send_bloc
+  signal Rd_n_ld,Rd_s_ld,Rd_e_ld,Rd_w_ld : std_logic; --signal de ctrl des
+                                                      --bascules 16bits d'envoi
+                                                      --vers la fifo
+  signal Rc_n_d,Rc_s_d,Rc_e_d,Rc_w_d : std_logic; --signal d'entrée de la double
+                                                  --bascule 1bit du send
+  signal Rc_n_i,Rc_s_i,Rc_e_i,Rc_w_i : std_logic; --signal intermédiaire de la double
+                                                  --bascule 1bit du send
+  signal Rc_n_q,Rc_s_q,Rc_e_q,Rc_w_q : std_logic; --signal de sortie de la double
+                                                  --bascule 1bit du send
+  signal north_en_sig,south_en_sig,east_en_sig,west_en_sig: std_logic; -- signal de contrôle
+                                                       -- d'écriture sur la fifo
+
 
 -- sorties registres									
   signal R_q,R_d 		: REGISTER_FILE(0 to 7); 
   signal Ra_q,Ra_d	: std_logic_vector(len_data_bus-1 downto 0);
   signal Rg_q,Rg_d	: std_logic_vector(len_data_bus-1 downto 0);
+  signal dmux_out_bus   : std_logic_vector(len_data_bus-1 downto 0); --sortie
+                                                                     --du demux
+                                                                     --vers mux
+                                                                     --principal
+  signal dmux_out_logic : std_logic_vector(len_data_bus-1 downto 0); --signal
+                                                                     --de
+                                                                     --sortie
+                                                                     --du mux
+                                                                     --vers la
+                                                                     --logique
+  signal logic_out_n,logic_out_s,logic_out_e,logic_out_w : std_logic; --sorties
+  
+--calculées par la logique vers le mux contrôle
+  signal sig_send : std_logic; --contrôle les mux et le demux d'envoie
   signal Ri_q,Ri_d 	: std_logic_vector(10 downto 0); 	-- registre instruction 10 bits
   signal Rd_q,Rd_d	: std_logic_vector(len_data_bus-1 downto 0); 
   signal Rad_q,Rad_d	: std_logic_vector(len_addr_bus-1 downto 0); 
@@ -64,10 +96,6 @@ architecture behavior of PROC is
   signal Rd_s_d,Rd_s_q : std_logic_vector(len_data_bus-1 downto 0);
   signal Rd_e_d,Rd_e_q : std_logic_vector(len_data_bus-1 downto 0);
   signal Rd_w_d,Rd_w_q : std_logic_vector(len_data_bus-1 downto 0);
-  signal Rw_n_q,Rw_n_d		: std_logic;
-  signal Rw_s_q,Rw_s_d		: std_logic;
-  signal Rw_e_q,Rw_e_d		: std_logic;
-  signal Rw_w_q,Rw_w_d		: std_logic;
   signal Xreg,Yreg 	: std_logic_vector(0 to 7); 			-- selection registres
 
   signal mux_sel	: std_logic_vector(3 downto 0);	-- selection registres R(), A, G, I dans mux
@@ -93,16 +121,13 @@ architecture behavior of PROC is
   constant i_brgt	 	: std_logic_vector(4 downto 0) := "01011";
   constant i_brz	 	: std_logic_vector(4 downto 0) := "01100";
   constant i_brmi	 	: std_logic_vector(4 downto 0) := "01101";
-  constant i_sendn 	: std_logic_vector( 4 downto 0 ) := "10001";
-  constant i_sends 	: std_logic_vector( 4 downto 0 ) := "10010";
-  constant i_sende 	: std_logic_vector( 4 downto 0 ) := "10100";
-  constant i_sendw 	: std_logic_vector( 4 downto 0 ) := "11000";
+  constant i_send 	: std_logic_vector( 4 downto 0 ) := "10001";
   constant i_rcv 	: std_logic_vector( 4 downto 0 ) := "01111";
 
-  constant i_name	: INST := ("mv  ","ldi ","add ","sub ","ld  ","st  ","mvnz","mvgt","and ","bra ","brnz","brgt","brz ","brmi","sendn","sends","sende","sendw","rcv");
+  constant i_name	: INST := ("mv","ldi","add","sub","ld","st","mvnz","mvgt","and ","bra","brnz","brgt","brz","brmi","sendn","rcv");
 
 -- Table de constantes pour le multiplexeur
--- codes de 0000 à 0111 : nanobus <= R_q() (PC = 0111)
+-- codes de 0000 à 0111 : nanobus <= R_q() (PC = 0111,NumProc=0110)
 -- code 		1000				: nanobus <= din
 -- code 		1001				: nanobus <= Rg
 -- code			autres			: nanobus <= 0
@@ -161,6 +186,14 @@ BEGIN
         Rw_e_q <= Rw_e_q;
         Rw_w_q <= Rw_w_d;
         Rw_q	<= Rw_d;
+        Rc_n_q<=Rc_n_i;
+        Rc_n_i<=Rc_n_d;
+        Rc_s_q<=Rc_s_i;
+        Rc_s_i<=Rc_s_d;
+        Rc_e_q<=Rc_e_i;
+        Rc_e_i<=Rc_e_d;
+        Rc_w_q<=Rc_w_i;
+        Rc_w_i<=Rc_w_d;
       end if;
     end if;
   END Process;
@@ -200,8 +233,16 @@ BEGIN
     if Rd_w_ld='1' then Rd_w_d <=nanobus; end if;
     Rd_out	<= Rd_q;
     Rad_out	<= Rad_q;
-    I 			<= Ri_q(9 downto 6);
+    I 			<= Ri_q(10 downto 6);
     write 	<= Rw_q;
+    send_out_n <= Rd_n_q;
+    send_out_s <= Rd_s_q;
+    send_out_e <= Rd_e_q;
+    send_out_w <= Rd_w_q;
+    north_en <= north_en_sig;
+    south_en <= south_en_sig;
+    east_en <= east_en_sig;
+    west_en <= west_en_sig;
   end process reg_p;
 
 
@@ -222,7 +263,56 @@ BEGIN
     end if;
   end process mux_p;
 
+-- Process combinatoire : remet à zéro les signaux enable pour send
+  -- Si mux_send=0 : raz
+  -- Si mux_send=1 : enable traversent le mux
+  mux_send_p : process (sig_send,logic_out_n,logic_out_s,logic_out_e,logic_out_w)
+  begin
+    if (sig_send='1') then
+      Rc_n_d<=logic_out_n;
+      Rc_s_d<=logic_out_s;
+      Rc_e_d<=logic_out_e;
+      Rc_w_d<=logic_out_w;
+    else
+      Rc_n_d<='0';
+      Rc_s_d<='0';
+      Rc_e_d<='0';
+      Rc_w_d<='0';
+    end if;
+  end mux_send_p;
+        
+-- Process combinatoire de contrôle du demux
+  demux_p : process (Rg_q,sig_send)
+  begin
+    if(sig_send='1') then
+      dmux_out_logic<=Rg_q;
+    else dmux_out_bus<=Rg_q;
+    end if;
+  end demux_p;
 
+-- Process combinatoire qui calcule la direction d'envoi
+  logique_direction_envoi : process (dmux_out_logic)
+  begin
+    logic_out_n <=dmux_out_logic(3) and dmux_out_logic(2) and not dmux_out_logic(1) and not dmux_out_logic(0);
+    logic_out_s <=not dmux_out_logic(1) and not dmux_out_logic(0) and (dmux_out_logic(3) xor dmux_out_logic(2));
+    logic_out_w <=dmux_out_logic(1) and dmux_out_logic(0);
+    logic_out_e <='0'; -- /!\ VÉRIFIER SOUS QUARTUS LA DESCRITPION VHDL !!!!
+  end logique_direction_envoi;
+
+-- Process combinatoire qui maintient le bit de contrôle à 1 pendant 2 cycles
+-- correspondant aux 2 bascules
+  logique_maintient : process (Rc_n_d,Rc_n_i,Rc_n_q,Rc_s_d,Rc_s_i,Rc_s_q,Rc_e_d,Rc_e_i,Rc_e_q,Rc_w_d,Rc_w_i,Rc_w_q)
+  begin
+    Rd_n_ld<=Rc_n_d or Rc_n_i;
+    north_en_sig<=Rc_n_i or Rc_n_q;
+    Rd_s_ld<=Rc_s_d or Rc_s_i;
+    south_en_sig<=Rc_s_i or Rc_s_q;
+    Rd_e_ld<=Rc_e_d or Rc_e_i;
+    east_en_sig<=Rc_e_i or Rc_e_q;
+    Rd_w_ld<=Rc_w_d or Rc_w_i;
+    west_en_sig<=Rc_w_i or Rc_w_q;
+  end logique_maintient
+    
 -- Process combinatoire : drapeaux Z et G
 -- Z_bit=1 si Rg_q = 0
 -- G_bit = Rg_q(poids fort) c'est le bit de signe de Rg
@@ -265,10 +355,11 @@ BEGIN
     offset_PC(5 downto 0) <= rx & ry;			-- 6 bits de l'offset PC pour branch
     Rad_ld <='0';
     Rd_ld <='0';
-    Rw_n_d<='0';    
-    Rw_s_d<='0';
-    Rw_e_d<='0';
-    Rw_w_d<='0';
+    Rd_n_ld<='0';
+    Rd_s_ld<='0';
+    Rd_e_ld<='0';
+    Rd_w_ld<='0';
+    sig_send<='0';
     
     -- Machine a etats :
 
@@ -338,18 +429,9 @@ BEGIN
               br_pc<='1';		-- valide calcul PC + offset_PC
             end if;
             p_next_state <= fetch1;
-          when i_sendn =>
-            Rd_n_ld<='1';       -- ecriture dans registre de sortie nord
-            Rw_n_d<='1';        -- signal write pour la fifo nord
-          when i_sends =>
-            Rd_s_ld<='1';
-            Rw_s_d<='1';
-          when i_sende =>
-            Rd_e_ld<='1';
-            Rw_e_d<='1';
-          when i_sendw =>
-            Rd_w_ld<='1';
-            Rw_w_d<='1';
+          when i_send =>
+            mux_sel<="0110"; --sélectionne le registre Numproc
+            Ra_ld<='1';
           when others =>
         end case;
 	
@@ -380,29 +462,33 @@ BEGIN
             Rg_ld<='1';		-- ecriture Rx-A dans REG G
             alu_code<=alu_and;	-- selection and
             p_next_state <= exe_3;
-          when i_sendn =>
-            mux_sel<='0' & rx;  -- registre x contenant la data dans nanobus
-            Rd_n_ld<='1';       -- ecriture dans registre de sortie nord   
-            Rw_n_d<='1';        -- signal write pour la fifo nord
-          when i_sends =>
-            mux_sel<='0' & rx;
-            Rd_s_ld<='1';
-            Rw_s_d<='1';
-          when i_sende =>
-            mux_sel<='0' & rx;
-            Rd_e_ld<='1';
-            Rw_e_d<='1';
-          when i_sendw =>
-            mux_sel<='0' & rx;
-            Rd_w_ld<='1';
-            Rw_w_d<='1';
-
+          when i_send =>
+            mux_sel<='0' & rx;  -- registre x contenant la destination dans nanobus
+            Rg_ld<='1';
+            alu_code<=alu_sub;
+            p_next_state<=exe_3;
           when others =>
         end case;
+        
       when exe_3 =>
         p_next_state <= fetch1;
         mux_sel<=MUX_Rg;			-- resultat Rg
         R_ld<=Xreg; 			-- selection registre destination Rx
+        case I is
+          when i_send =>
+            sig_send<='1'; --Contrôle des mux et du demux
+            mux_sel<='0' & rx; --ecriture de la destination dans nanobus
+            p_next_state <= exe_4;
+        end case;
+        
+      when exe_4 =>
+        p_next_state <= fetch1;
+        case I is
+          when i_send =>
+            mux_sel<='0' & ry; --ecriture de la data dans nanobus
+                                       --le contrôle de la bascule 16bits
+                                       --d'envoi est fait par la logique de
+                                       --calcul de direction
     end case;
     
   END PROCESS;
