@@ -49,7 +49,7 @@ architecture behavior of PROC is
   signal R_ld				: std_logic_vector(0 to 7); 			-- selection registres R()
   signal Ra_ld,Rg_ld,Ri_ld : std_logic;
   signal Rd_ld,Rad_ld	: std_logic;
-  signal Rd_n_ld,Rd_s_ld,Rd_e_ld,Rd_w_ld: std_logic;    -- selection registres
+  signal north_en,south_en,east_en,west_en: std_logic;    -- selection registr
                                                         -- pour send_bloc
 
 -- sorties registres									
@@ -265,7 +265,11 @@ BEGIN
     offset_PC(5 downto 0) <= rx & ry;			-- 6 bits de l'offset PC pour branch
     Rad_ld <='0';
     Rd_ld <='0';
-
+    Rw_n_d<='0';    
+    Rw_s_d<='0';
+    Rw_e_d<='0';
+    Rw_w_d<='0';
+    
     -- Machine a etats :
 
     CASE p_state is
@@ -335,9 +339,17 @@ BEGIN
             end if;
             p_next_state <= fetch1;
           when i_sendn =>
+            Rd_n_ld<='1';       -- ecriture dans registre de sortie nord
+            Rw_n_d<='1';        -- signal write pour la fifo nord
           when i_sends =>
+            Rd_s_ld<='1';
+            Rw_s_d<='1';
           when i_sende =>
+            Rd_e_ld<='1';
+            Rw_e_d<='1';
           when i_sendw =>
+            Rd_w_ld<='1';
+            Rw_w_d<='1';
           when others =>
         end case;
 	
@@ -369,9 +381,21 @@ BEGIN
             alu_code<=alu_and;	-- selection and
             p_next_state <= exe_3;
           when i_sendn =>
+            mux_sel<='0' & rx;  -- registre x contenant la data dans nanobus
+            Rd_n_ld<='1';       -- ecriture dans registre de sortie nord   
+            Rw_n_d<='1';        -- signal write pour la fifo nord
           when i_sends =>
+            mux_sel<='0' & rx;
+            Rd_s_ld<='1';
+            Rw_s_d<='1';
           when i_sende =>
+            mux_sel<='0' & rx;
+            Rd_e_ld<='1';
+            Rw_e_d<='1';
           when i_sendw =>
+            mux_sel<='0' & rx;
+            Rd_w_ld<='1';
+            Rw_w_d<='1';
 
           when others =>
         end case;
