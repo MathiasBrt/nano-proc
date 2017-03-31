@@ -5,7 +5,7 @@ USE IEEE.NUMERIC_STD.ALL;
 entity STD_FIFO is
   Port ( 
     CLK		: in  STD_LOGIC;
-    rst		: in  STD_LOGIC;
+    resetn	: in  STD_LOGIC;
     WriteEn	: in  STD_LOGIC;
     DataIn	: in  STD_LOGIC_VECTOR (len_data_bus - 1 downto 0);
     ReadEn	: in  STD_LOGIC;
@@ -30,7 +30,7 @@ begin
     variable Looped : boolean;
   begin
     if (clk='1' and clk'event) then --Rapport : utiliser rising_edge(clk) ne convient que pour des clk de 0 à 1
-      if rst = '1' then
+      if resetn = '0' then
         Head := 0;
         Tail := 0;
         

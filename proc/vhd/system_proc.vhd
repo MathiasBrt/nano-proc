@@ -15,7 +15,20 @@ USE lib_nanoproc.nano_pkg.all;
 entity SYSTEM_PROC is
 PORT ( 	Resetn, Clock 	: in std_logic;
 	io_inp 		: in std_logic_vector(31 downto 0);
-	io_out 		: out std_logic_vector(31 downto 0));
+	io_out 		: out std_logic_vector(31 downto 0);
+        data_out_n : out std_logic_vector(len_data_bus-1 downto 0);
+        data_out_s : out std_logic_vector(len_data_bus-1 downto 0);
+        data_out_e : out std_logic_vector(len_data_bus-1 downto 0);
+        data_out_w : out std_logic_vector(len_data_bus-1 downto 0);
+        fifo_empty_n : out std_logic;
+        fifo_empty_s : out std_logic;
+        fifo_empty_e : out std_logic;
+        fifo_empty_w : out std_logic;
+        fifo_full_n : out std_logic;
+        fifo_full_s : out std_logic;
+        fifo_full_e : out std_logic;
+        fifo_full_w : out std_logic
+      );
 end SYSTEM_PROC;
 
 -- systeme a nanoproc
@@ -32,7 +45,15 @@ port ( 	din 		: in std_logic_vector(len_data_bus-1 downto 0);
 	resetn, clk 	: in std_logic;
 	write 		: out std_logic;
 	Rd_out 		: out std_logic_vector(len_data_bus-1 downto 0);
-	Rad_out 	: out std_logic_vector(len_addr_bus-1 downto 0));
+	Rad_out 	: out std_logic_vector(len_addr_bus-1 downto 0);
+        send_out_n : out std_logic_vector(len_data_bus-1 downto 0);
+        send_out_s : out std_logic_vector(len_data_bus-1 downto 0);
+        send_out_e : out std_logic_vector(len_data_bus-1 downto 0);
+        send_out_w : out std_logic_vector(len_data_bus-1 downto 0);
+        north_en : out std_logic;
+        south_en : out std_logic;
+        east_en : out std_logic;
+        west_en : out std_logic);
 end component;
 
 component RAM
@@ -42,12 +63,14 @@ port (
          add 		: in std_logic_vector(add_bits-1 downto 0);
 	 data_in 	: in std_logic_vector(data_bits-1 downto 0);
 	 data_out	: out std_logic_vector(data_bits-1 downto 0);
-	 clk,write 	: in std_logic);
+	 clk,write 	: in std_logic
+       );
 end component;
 
 component ROM
 port (	address 	: in std_logic_vector(len_addr_bus-2 downto 0) ;
-	output  	: out std_logic_vector(15 downto 0) ) ;
+	output  	: out std_logic_vector(15 downto 0)
+      );
 end component;
 
 component PORT_IO
@@ -56,7 +79,21 @@ port (	clk, reset_n, ecr : in std_logic;
 	dat_in_io 	: in std_logic_vector(len_data_bus-1 downto 0);
 	in_io  		: in std_logic_vector(31 downto 0);
 	dat_out_io  	: out std_logic_vector(len_data_bus-1 downto 0);
-	out_io  	: out std_logic_vector(31 downto 0)) ;
+	out_io  	: out std_logic_vector(31 downto 0)
+      ) ;
+end component;
+
+component STD_FIFO
+port ( 
+  CLK		: in  STD_LOGIC;
+  resetn    	: in  STD_LOGIC;
+  WriteEn	: in  STD_LOGIC;
+  DataIn	: in  STD_LOGIC_VECTOR (len_data_bus - 1 downto 0);
+  ReadEn	: in  STD_LOGIC;
+  DataOut	: out STD_LOGIC_VECTOR (len_data_bus - 1 downto 0);
+  Empty	: out STD_LOGIC;
+  Full	: out STD_LOGIC
+  );
 end component;
 
 signal          w_ram,wr,ecr_port  :  std_logic;
@@ -65,6 +102,9 @@ signal          sys_add_bus  	: std_logic_vector(len_addr_bus-1 downto 0);
 signal 		sys_add_ram	: std_logic_vector(len_addr_bus-3 downto 0);
 signal 		sys_add_rom	: std_logic_vector(len_addr_bus-2 downto 0);
 signal		sys_add_port	: std_logic;
+signal s_data_in_n,s_data_in_s,s_data_in_e,s_data_in_w : std_logic_vector(len_data_bus-1 downto 0);
+signal s_wr_en_n,s_wr_en_s,s_wr_en_e,s_wr_en_w : std_logic;
+signal s_rd_en_n,s_rd_en_s,s_rd_en_e,s_rd_en_w : std_logic;
 
 begin
 
@@ -97,8 +137,45 @@ U4 : port_io port map(
 		in_io => io_inp,
 		dat_out_io => data_port,
 		out_io => io_out);
-				
-	
+
+-- Mapping des 4 fifos
+U5 : STD_FIFO port map (
+  clk     => Clock,
+  resetn  => Resetn,
+  DataIn => s_data_in_n,
+  ReadEn  => s_rd_en_n,
+  DataOut => data_out_n,
+  Empty   => fifo_empty_n,
+  Full    => fifo_full_n);
+
+U6 : STD_FIFO port map (
+  clk     => Clock,
+  resetn  => Resetn,
+  DataIn => s_data_in_s,
+  ReadEn  => s_rd_en_s,
+  DataOut => data_out_s,
+  Empty   => fifo_empty_s,
+  Full    => fifo_full_s);
+
+U7 : STD_FIFO port map (
+  clk     => Clock,
+  resetn  => Resetn,
+  DataIn => s_data_in_e,
+  ReadEn  => s_rd_en_e,
+  DataOut => data_out_e,
+  Empty   => fifo_empty_e,
+  Full    => fifo_full_e);
+
+U8 : STD_FIFO port map (
+  clk     => Clock,
+  resetn  => Resetn,
+  DataIn => s_data_in_w,
+  ReadEn  => s_rd_en_w,
+  DataOut => data_out_w,
+  Empty   => fifo_empty_w,
+  Full    => fifo_full_w);
+
+
 process (sys_add_bus,wr,data_rom,data_ram,data_port)
 begin
 	ecr_port<='0';
