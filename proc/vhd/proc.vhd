@@ -293,8 +293,8 @@ BEGIN
 -- Process combinatoire qui calcule la direction d'envoi
   logique_direction_envoi : process (dmux_out_logic)
   begin
-    logic_out_n <=dmux_out_logic(3) and dmux_out_logic(2) and not dmux_out_logic(1) and not dmux_out_logic(0);
-    logic_out_s <=not dmux_out_logic(1) and not dmux_out_logic(0) and (dmux_out_logic(3) xor dmux_out_logic(2));
+    logic_out_n <=dmux_out_logic(3) and dmux_out_logic(2) and (not dmux_out_logic(1)) and (not dmux_out_logic(0));
+    logic_out_s <=(not dmux_out_logic(1)) and (not dmux_out_logic(0)) and (dmux_out_logic(3) xor dmux_out_logic(2));
     logic_out_w <=dmux_out_logic(1) and dmux_out_logic(0);
     logic_out_e <='0'; -- /!\ VÉRIFIER SOUS QUARTUS LA DESCRITPION VHDL !!!!
   end logique_direction_envoi;
