@@ -51,7 +51,7 @@ architecture behavior of PROC is
   signal offset_PC 	: std_logic_vector(len_data_bus-1 downto 0); -- offset en cas de branch
   signal res_alu 		: std_logic_vector(len_data_bus-1 downto 0); -- resultat alu
   signal Z_bit,G_bit : std_logic;											-- drapeaux resultat alu
-
+PROC
 -- definition registres
 -- selections
   signal R_ld				: std_logic_vector(0 to 7); 			-- selection registres R()
@@ -60,14 +60,14 @@ architecture behavior of PROC is
   signal Rd_n_ld,Rd_s_ld,Rd_e_ld,Rd_w_ld : std_logic; --signal de ctrl des
                                                       --bascules 16bits d'envoi
                                                       --vers la fifo
-  signal Rc_n_d,Rc_s_d,Rc_e_d,Rc_w_d : std_logic; --signal d'entrée de la double
+  signal Rc_n_d,Rc_s_d,Rc_e_d,Rc_w_d : std_logic; --signal d'entrÃ©e de la double
                                                   --bascule 1bit du send
-  signal Rc_n_i,Rc_s_i,Rc_e_i,Rc_w_i : std_logic; --signal intermédiaire de la double
+  signal Rc_n_i,Rc_s_i,Rc_e_i,Rc_w_i : std_logic; --signal intermÃ©diaire de la double
                                                   --bascule 1bit du send
   signal Rc_n_q,Rc_s_q,Rc_e_q,Rc_w_q : std_logic; --signal de sortie de la double
                                                   --bascule 1bit du send
-  signal north_en_sig,south_en_sig,east_en_sig,west_en_sig: std_logic; -- signal de contrôle
-                                                       -- d'écriture sur la fifo
+  signal north_en_sig,south_en_sig,east_en_sig,west_en_sig: std_logic; -- signal de contrÃ´le
+                                                       -- d'Ã©criture sur la fifo
 
 
 -- sorties registres									
@@ -86,8 +86,8 @@ architecture behavior of PROC is
                                                                      --logique
   signal logic_out_n,logic_out_s,logic_out_e,logic_out_w : std_logic; --sorties
   
---calculées par la logique vers le mux contrôle
-  signal sig_send : std_logic; --contrôle les mux et le demux d'envoie
+--calculÃ©es par la logique vers le mux contrÃ´le
+  signal sig_send : std_logic; --contrÃ´le les mux et le demux d'envoie
   signal Ri_q,Ri_d 	: std_logic_vector(10 downto 0); 	-- registre instruction 10 bits
   signal Rd_q,Rd_d	: std_logic_vector(len_data_bus-1 downto 0); 
   signal Rad_q,Rad_d	: std_logic_vector(len_addr_bus-1 downto 0); 
@@ -127,7 +127,7 @@ architecture behavior of PROC is
   constant i_name	: INST := ("mv","ldi","add","sub","ld","st","mvnz","mvgt","and ","bra","brnz","brgt","brz","brmi","sendn","rcv");
 
 -- Table de constantes pour le multiplexeur
--- codes de 0000 à 0111 : nanobus <= R_q() (PC = 0111,NumProc=0110)
+-- codes de 0000 Ã  0111 : nanobus <= R_q() (PC = 0111,NumProc=0110)
 -- code 		1000				: nanobus <= din
 -- code 		1001				: nanobus <= Rg
 -- code			autres			: nanobus <= 0
@@ -263,7 +263,7 @@ BEGIN
     end if;
   end process mux_p;
 
--- Process combinatoire : remet à zéro les signaux enable pour send
+-- Process combinatoire : remet Ã  zÃ©ro les signaux enable pour send
   -- Si mux_send=0 : raz
   -- Si mux_send=1 : enable traversent le mux
   mux_send_p : process (sig_send,logic_out_n,logic_out_s,logic_out_e,logic_out_w)
@@ -279,16 +279,16 @@ BEGIN
       Rc_e_d<='0';
       Rc_w_d<='0';
     end if;
-  end mux_send_p;
+  end process mux_send_p;
         
--- Process combinatoire de contrôle du demux
+-- Process combinatoire de contrÃ´le du demux
   demux_p : process (Rg_q,sig_send)
   begin
     if(sig_send='1') then
       dmux_out_logic<=Rg_q;
     else dmux_out_bus<=Rg_q;
     end if;
-  end demux_p;
+  end process demux_p;
 
 -- Process combinatoire qui calcule la direction d'envoi
   logique_direction_envoi : process (dmux_out_logic)
@@ -296,10 +296,10 @@ BEGIN
     logic_out_n <=dmux_out_logic(3) and dmux_out_logic(2) and (not dmux_out_logic(1)) and (not dmux_out_logic(0));
     logic_out_s <=(not dmux_out_logic(1)) and (not dmux_out_logic(0)) and (dmux_out_logic(3) xor dmux_out_logic(2));
     logic_out_w <=dmux_out_logic(1) and dmux_out_logic(0);
-    logic_out_e <='0'; -- /!\ VÉRIFIER SOUS QUARTUS LA DESCRITPION VHDL !!!!
-  end logique_direction_envoi;
+    logic_out_e <= ((not dmux_out_logic(0)) or (not dmux_out_logic(1))) and ((not dmux_out_logic(3)) or (not dmux_out_logic(2)) or dmux_out_logic(1) or dmux_out_logic(0) or (not (dmux_out_logic(3) xor dmux_out_logic(2)));
+  end process logique_direction_envoi;
 
--- Process combinatoire qui maintient le bit de contrôle à 1 pendant 2 cycles
+-- Process combinatoire qui maintient le bit de contrÃ´le Ã  1 pendant 2 cycles
 -- correspondant aux 2 bascules
   logique_maintient : process (Rc_n_d,Rc_n_i,Rc_n_q,Rc_s_d,Rc_s_i,Rc_s_q,Rc_e_d,Rc_e_i,Rc_e_q,Rc_w_d,Rc_w_i,Rc_w_q)
   begin
@@ -311,7 +311,7 @@ BEGIN
     east_en_sig<=Rc_e_i or Rc_e_q;
     Rd_w_ld<=Rc_w_d or Rc_w_i;
     west_en_sig<=Rc_w_i or Rc_w_q;
-  end logique_maintient
+  end process logique_maintient;
     
 -- Process combinatoire : drapeaux Z et G
 -- Z_bit=1 si Rg_q = 0
@@ -430,7 +430,7 @@ BEGIN
             end if;
             p_next_state <= fetch1;
           when i_send =>
-            mux_sel<="0110"; --sélectionne le registre Numproc
+            mux_sel<="0110"; --sÃ©lectionne le registre Numproc
             Ra_ld<='1';
           when others =>
         end case;
@@ -476,7 +476,7 @@ BEGIN
         R_ld<=Xreg; 			-- selection registre destination Rx
         case I is
           when i_send =>
-            sig_send<='1'; --Contrôle des mux et du demux
+            sig_send<='1'; --ContrÃ´le des mux et du demux
             mux_sel<='0' & rx; --ecriture de la destination dans nanobus
             p_next_state <= exe_4;
         end case;
@@ -486,9 +486,10 @@ BEGIN
         case I is
           when i_send =>
             mux_sel<='0' & ry; --ecriture de la data dans nanobus
-                                       --le contrôle de la bascule 16bits
+                                       --le contrÃ´le de la bascule 16bits
                                        --d'envoi est fait par la logique de
                                        --calcul de direction
+		end case;
     end case;
     
   END PROCESS;
