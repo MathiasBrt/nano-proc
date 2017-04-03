@@ -8,6 +8,14 @@ Z0 d/tp/xph2sei/xph2sei412/nano-proc/proc/bench
 !i10d 8192
 !i10e 25
 !i10f 100
+T_opt
+!s110 1491233944
+VhkdF0LH<TgOZDj]2bhAh71
+04 10 1 work bench_proc a 1
+=1-bc305b9b270c-58e26c98-a3238-30bb
+o-quiet -auto_acc_if_foreign -work lib_nanoproc_bench
+n@_opt
+OL;O;10.2c;57
 Ebench_proc
 Z1 w1491227166
 Z2 DPx12 lib_nanoproc 8 nano_pkg 0 22 `<<kSG55O>hH13@dB[@@41
@@ -22,16 +30,16 @@ Z10 Fbench_system.vhd
 l0
 L12
 VbK5[HVDSk2@Xn;eSoCJGH0
-!s100 PZ<4HzJ5Mo_]BbLRo7cN]1
 Z11 OL;C;10.2c;57
 32
-Z12 !s110 1491227359
-!i10b 1
-Z13 !s108 1491227359.331453
+Z12 !s110 1491233927
+Z13 !s108 1491233927.620160
 Z14 !s90 -work|lib_nanoproc_bench|bench_system.vhd|
 Z15 !s107 bench_system.vhd|
-!i111 0
 Z16 o-work lib_nanoproc_bench
+!s100 PZ<4HzJ5Mo_]BbLRo7cN]1
+!i10b 1
+!i111 0
 Aa
 R2
 R3
@@ -39,17 +47,17 @@ R4
 R5
 R6
 R7
-Z17 DEx4 work 10 bench_proc 0 22 bK5[HVDSk2@Xn;eSoCJGH0
+DEx4 work 10 bench_proc 0 22 bK5[HVDSk2@Xn;eSoCJGH0
 l59
 L15
-Z18 VZ?>CPSjbJL6Ek@]XENi6:1
-Z19 !s100 PL=^i`P2RG4ToOBcL3cM?2
+VZ?>CPSjbJL6Ek@]XENi6:1
 R11
 32
 R12
-!i10b 1
 R13
 R14
 R15
-!i111 0
 R16
+!s100 PL=^i`P2RG4ToOBcL3cM?2
+!i10b 1
+!i111 0

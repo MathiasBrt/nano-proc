@@ -7,8 +7,8 @@ if [ "$?" != 0 ]
 then exit -1
 fi
 
-vcom -work lib_nanoproc_bench cfg_bench_system.vhd
-if [ "$?" != 0 ]
-then exit -1
-fi
+# vcom -work lib_nanoproc_bench cfg_bench_system.vhd
+# if [ "$?" != 0 ]
+# then exit -1
+# fi
 

@@ -1,0 +1,178 @@
+# //  ModelSim SE-64 10.2c Jul 18 2013 Linux 3.2.0-4-amd64
+# //
+# //  Copyright 1991-2013 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+vsim lib_nanoproc_bench.bench_proc
+# vsim lib_nanoproc_bench.bench_proc 
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: [1] system_proc.vhd(158): (vopt-3473) Component instance "/bench_proc/U1/U5 : STD_FIFO" is not bound.
+# ** Warning: [1] system_proc.vhd(168): (vopt-3473) Component instance "/bench_proc/U1/U6 : STD_FIFO" is not bound.
+# ** Warning: [1] system_proc.vhd(178): (vopt-3473) Component instance "/bench_proc/U1/U7 : STD_FIFO" is not bound.
+# ** Warning: [1] system_proc.vhd(188): (vopt-3473) Component instance "/bench_proc/U1/U8 : STD_FIFO" is not bound.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.numeric_std(body)
+# Loading ieee.math_real(body)
+# Loading lib_nanoproc.nano_pkg
+# Loading work.bench_proc(a)#1
+# Loading ieee.std_logic_unsigned(body)
+# Loading lib_nanoproc.system_proc(a)#1
+# ** Warning: (vsim-3473) Component instance "U5 : STD_FIFO" is not bound.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1 File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/system_proc.vhd
+# ** Warning: (vsim-3473) Component instance "U6 : STD_FIFO" is not bound.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1 File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/system_proc.vhd
+# ** Warning: (vsim-3473) Component instance "U7 : STD_FIFO" is not bound.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1 File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/system_proc.vhd
+# ** Warning: (vsim-3473) Component instance "U8 : STD_FIFO" is not bound.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1 File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/system_proc.vhd
+# ** Warning: (vsim-8684) No drivers exist on out port /bench_proc/U1/data_out_n, and its initial value is not used.
+# Therefore, simulation behavior may occur that is not in compliance with
+# the VHDL standard as the initial values come from the base signal /bench_proc/data_out_n.
+# ** Warning: (vsim-8684) No drivers exist on out port /bench_proc/U1/data_out_s, and its initial value is not used.
+# Therefore, simulation behavior may occur that is not in compliance with
+# the VHDL standard as the initial values come from the base signal /bench_proc/data_out_s.
+# ** Warning: (vsim-8684) No drivers exist on out port /bench_proc/U1/data_out_e, and its initial value is not used.
+# Therefore, simulation behavior may occur that is not in compliance with
+# the VHDL standard as the initial values come from the base signal /bench_proc/data_out_e.
+# ** Warning: (vsim-8684) No drivers exist on out port /bench_proc/U1/data_out_w, and its initial value is not used.
+# Therefore, simulation behavior may occur that is not in compliance with
+# the VHDL standard as the initial values come from the base signal /bench_proc/data_out_w.
+add wave -position insertpoint  \
+sim:/bench_proc/Resetn \
+sim:/bench_proc/Clock \
+sim:/bench_proc/io_inp \
+sim:/bench_proc/io_out \
+sim:/bench_proc/data_out_n \
+sim:/bench_proc/data_out_s \
+sim:/bench_proc/data_out_e \
+sim:/bench_proc/data_out_w \
+sim:/bench_proc/CLOCK_PERIOD
+run
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U3
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U3
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U2
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U2
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U1
+# ** Warning: NUMERIC_STD."/=": metavalue detected, returning TRUE
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/U1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 10 ns  Iteration: 1  Instance: /bench_proc/U1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 10 ns  Iteration: 1  Instance: /bench_proc/U1/U1
+# ** Fatal: (vsim-3421) Value 17 is out of range 0 to 15.
+#    Time: 290 ns  Iteration: 2  Process: /bench_proc/U1/U1/controlsignals File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/proc.vhd
+# Fatal error in Process controlsignals at /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/proc.vhd line 330
+# 
+# HDL call sequence:
+# Stopped at /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/proc.vhd 330 Process controlsignals
+# 
+restart
+# ** Warning: (vsim-31) Unable to unlink file "/tp/xph2sei/xph2sei412/nano-proc/proc/lib/lib_nanoproc_bench/_opt__lock".
+# No such file or directory. (errno = ENOENT)
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: [1] system_proc.vhd(158): (vopt-3473) Component instance "/bench_proc/U1/U5 : STD_FIFO" is not bound.
+# ** Warning: [1] system_proc.vhd(168): (vopt-3473) Component instance "/bench_proc/U1/U6 : STD_FIFO" is not bound.
+# ** Warning: [1] system_proc.vhd(178): (vopt-3473) Component instance "/bench_proc/U1/U7 : STD_FIFO" is not bound.
+# ** Warning: [1] system_proc.vhd(188): (vopt-3473) Component instance "/bench_proc/U1/U8 : STD_FIFO" is not bound.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.numeric_std(body)
+# Loading ieee.math_real(body)
+# Loading lib_nanoproc.nano_pkg
+# Loading work.bench_proc(a)#1
+# Loading ieee.std_logic_unsigned(body)
+# Loading lib_nanoproc.system_proc(a)#1
+# ** Warning: (vsim-3473) Component instance "U5 : STD_FIFO" is not bound.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1 File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/system_proc.vhd
+# ** Warning: (vsim-3473) Component instance "U6 : STD_FIFO" is not bound.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1 File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/system_proc.vhd
+# ** Warning: (vsim-3473) Component instance "U7 : STD_FIFO" is not bound.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1 File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/system_proc.vhd
+# ** Warning: (vsim-3473) Component instance "U8 : STD_FIFO" is not bound.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1 File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/system_proc.vhd
+# ** Warning: (vsim-8684) No drivers exist on out port /bench_proc/U1/data_out_n, and its initial value is not used.
+# Therefore, simulation behavior may occur that is not in compliance with
+# the VHDL standard as the initial values come from the base signal /bench_proc/data_out_n.
+# ** Warning: (vsim-8684) No drivers exist on out port /bench_proc/U1/data_out_s, and its initial value is not used.
+# Therefore, simulation behavior may occur that is not in compliance with
+# the VHDL standard as the initial values come from the base signal /bench_proc/data_out_s.
+# ** Warning: (vsim-8684) No drivers exist on out port /bench_proc/U1/data_out_e, and its initial value is not used.
+# Therefore, simulation behavior may occur that is not in compliance with
+# the VHDL standard as the initial values come from the base signal /bench_proc/data_out_e.
+# ** Warning: (vsim-8684) No drivers exist on out port /bench_proc/U1/data_out_w, and its initial value is not used.
+# Therefore, simulation behavior may occur that is not in compliance with
+# the VHDL standard as the initial values come from the base signal /bench_proc/data_out_w.
+run
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U3
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U3
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U2
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U2
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U1
+# ** Warning: NUMERIC_STD."/=": metavalue detected, returning TRUE
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/U1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/U1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 10 ns  Iteration: 1  Instance: /bench_proc/U1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 10 ns  Iteration: 1  Instance: /bench_proc/U1/U1
+# ** Fatal: (vsim-3421) Value 17 is out of range 0 to 15.
+#    Time: 290 ns  Iteration: 2  Process: /bench_proc/U1/U1/controlsignals File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/proc.vhd
+# Fatal error in Process controlsignals at /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/proc.vhd line 330
+# 
+# HDL call sequence:
+# Stopped at /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/proc.vhd 330 Process controlsignals
+# 

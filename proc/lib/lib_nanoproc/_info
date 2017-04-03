@@ -24,8 +24,8 @@ L9
 VeLfi?h_D9Sg<Fei7HlFU41
 Z11 OL;C;10.2c;57
 32
-Z12 !s110 1491226574
-Z13 !s108 1491226574.678376
+Z12 !s110 1491233927
+Z13 !s108 1491233926.984110
 Z14 !s90 -work|lib_nanoproc|alu.vhd|
 Z15 !s107 alu.vhd|
 Z16 o-work lib_nanoproc
@@ -65,10 +65,10 @@ L4
 VU`5[4l6F>A66^Xz`z`PaI0
 R11
 32
-R12
-Z19 !s108 1491226574.618229
-Z20 !s90 -work|lib_nanoproc|dec3to8.vhd|
-Z21 !s107 dec3to8.vhd|
+Z19 !s110 1491233926
+Z20 !s108 1491233926.929091
+Z21 !s90 -work|lib_nanoproc|dec3to8.vhd|
+Z22 !s107 dec3to8.vhd|
 R16
 !s100 :HY1hElA^V6IQXODRmg^`3
 !i10b 1
@@ -82,10 +82,10 @@ L9
 V]CHIe:AzlcOF8jYn<=EiU1
 R11
 32
-R12
 R19
 R20
 R21
+R22
 R16
 !s100 WKEi>1U@ldPa>o9LJQ;ZN3
 !i10b 1
@@ -103,10 +103,10 @@ V`<<kSG55O>hH13@dB[@@41
 R11
 32
 R16
-R12
+R19
 !s100 OR`:FG_WZ[W?hCAchoZAW1
 !i10b 1
-!s108 1491226574.528874
+!s108 1491233926.834798
 !s90 -work|lib_nanoproc|nano_pkg.vhd|
 !s107 nano_pkg.vhd|
 !i111 0
@@ -119,15 +119,15 @@ R5
 R6
 R7
 R8
-Z22 8port_io.vhd
-Z23 Fport_io.vhd
+Z23 8port_io.vhd
+Z24 Fport_io.vhd
 l0
 L19
 Veb1D7=Y6Ka4ZzFQV?dPIb0
 R11
 32
-Z24 !s110 1491226575
-Z25 !s108 1491226575.063892
+R12
+Z25 !s108 1491233927.343776
 Z26 !s90 -work|lib_nanoproc|port_io.vhd|
 Z27 !s107 port_io.vhd|
 R16
@@ -147,7 +147,7 @@ L28
 V9_;6S?7JS3Wib1i`JLJ]D3
 R11
 32
-R24
+R12
 R25
 R26
 R27
@@ -156,7 +156,7 @@ R16
 !i10b 1
 !i111 0
 Eproc
-Z28 w1491225927
+Z28 w1491233921
 R2
 R3
 R4
@@ -172,7 +172,7 @@ VS1b[6IYdbQo1Uj^9PXZ161
 R11
 32
 R12
-Z31 !s108 1491226574.757840
+Z31 !s108 1491233927.049573
 Z32 !s90 -work|lib_nanoproc|proc.vhd|
 Z33 !s107 proc.vhd|
 R16
@@ -189,7 +189,7 @@ R7
 DEx4 work 4 proc 0 22 S1b[6IYdbQo1Uj^9PXZ161
 l140
 L28
-VOmgl3AbUF>SAne]@dD=H]2
+Vo50:nSiR1ln<BDCZm?MzZ1
 R11
 32
 R12
@@ -197,7 +197,7 @@ R31
 R32
 R33
 R16
-!s100 fo<fQLn4:GSJVoAGo9F^82
+!s100 SK5_NT=fP;8o9nAc9nJ]:1
 !i10b 1
 !i111 0
 Eram
@@ -215,8 +215,8 @@ L14
 V^NWiHdS7:WEgEZ7mb[2jI1
 R11
 32
-R24
-Z36 !s108 1491226574.987894
+R12
+Z36 !s108 1491233927.278918
 Z37 !s90 -work|lib_nanoproc|ram.vhd|
 Z38 !s107 ram.vhd|
 R16
@@ -235,7 +235,7 @@ L24
 V59bfENdKD8Cn4X`goPz?I3
 R11
 32
-R24
+R12
 R36
 R37
 R38
@@ -244,7 +244,7 @@ R16
 !i10b 1
 !i111 0
 Erom
-R1
+Z39 w1491232372
 R2
 R3
 R4
@@ -252,40 +252,19 @@ R5
 R6
 R7
 R8
-Z39 8rom.vhd
-Z40 From.vhd
+Z40 8rom.vhd
+Z41 From.vhd
 l0
 L9
 Ve:9^K1In<7Dom=^z5EXI;3
 R11
 32
 R12
-Z41 !s108 1491226574.833049
-Z42 !s90 -work|lib_nanoproc|rom.vhd|
-Z43 !s107 rom.vhd|
+Z42 !s108 1491233927.135864
+Z43 !s90 -work|lib_nanoproc|rom.vhd|
+Z44 !s107 rom.vhd|
 R16
 !s100 3_mnLW51V`_21aSPU8?9M1
-!i10b 1
-!i111 0
-Aarch_prog_1
-R2
-R3
-R4
-R5
-R6
-R7
-Z44 DEx4 work 3 rom 0 22 e:9^K1In<7Dom=^z5EXI;3
-l52
-L39
-VVdf3ZzRk9oifji8HH;d2Z3
-R11
-32
-R12
-R41
-R42
-R43
-R16
-!s100 g]LSFOAHbKe2`[``:TUYo3
 !i10b 1
 !i111 0
 Aarch_prog_0
@@ -295,18 +274,18 @@ R4
 R5
 R6
 R7
-R44
-l30
+DEx4 work 3 rom 0 22 e:9^K1In<7Dom=^z5EXI;3
+l32
 L17
-V=L]m[JaHXWilI[;2MWNDU1
+V?R2KYAzd?Vh[DKBma3D@h3
 R11
 32
 R12
-R41
 R42
 R43
+R44
 R16
-!s100 [VH8VVHVSh@5o=<oL>dm90
+!s100 b>VkiAXVSA@ML8j77M:8i2
 !i10b 1
 !i111 0
 Erom_digit
@@ -326,7 +305,7 @@ Vi0:HJkTF[J`GhLI5Y@4z>2
 R11
 32
 R12
-Z47 !s108 1491226574.912894
+Z47 !s108 1491233927.201228
 Z48 !s90 -work|lib_nanoproc|rom_digit.vhd|
 Z49 !s107 rom_digit.vhd|
 R16
@@ -370,9 +349,9 @@ VS<[O<chnzdzi9k>QI4kP]0
 !s100 :[dK5cNFb^0bMk@8@cQ<D3
 R11
 32
-R24
+R12
 !i10b 1
-Z52 !s108 1491226575.208904
+Z52 !s108 1491233927.481927
 Z53 !s90 -work|lib_nanoproc|system.vhd|
 Z54 !s107 system.vhd|
 !i111 0
@@ -390,7 +369,7 @@ V8Rb1z7XZcPg2FX4Sk<J650
 !s100 03?CTW159DfB4Rgf[K;250
 R11
 32
-R24
+R12
 !i10b 1
 R52
 R53
@@ -412,8 +391,8 @@ L15
 VFOT>e9@AQ=:XVjRTo]k<02
 R11
 32
-R24
-Z58 !s108 1491226575.139567
+R12
+Z58 !s108 1491233927.416151
 Z59 !s90 -work|lib_nanoproc|system_proc.vhd|
 Z60 !s107 system_proc.vhd|
 R16
@@ -432,7 +411,7 @@ L41
 V3XzVV_IzCU@2YoecJmI:V1
 R11
 32
-R24
+R12
 R58
 R59
 R60

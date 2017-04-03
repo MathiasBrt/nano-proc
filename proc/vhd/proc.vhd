@@ -44,7 +44,7 @@ architecture behavior of PROC is
 
   signal p_state,p_next_state : STATE;
 -- pragma synthesis_off
-  signal cur_inst		: string(1 to 4); 
+--  signal cur_inst		: string(1 to 4); 
 -- pragma synthesis_on
   signal alu_code 	: std_logic_vector(1 downto 0); 	-- choix code op alu
   signal incr_pc,br_pc : std_logic;	
@@ -121,10 +121,10 @@ architecture behavior of PROC is
   constant i_brgt	 	: std_logic_vector(4 downto 0) := "01011";
   constant i_brz	 	: std_logic_vector(4 downto 0) := "01100";
   constant i_brmi	 	: std_logic_vector(4 downto 0) := "01101";
-  constant i_send 	: std_logic_vector( 4 downto 0 ) := "10001";
   constant i_rcv 	: std_logic_vector( 4 downto 0 ) := "01111";
+  constant i_send 	: std_logic_vector( 4 downto 0 ) := "10000";
 
-  constant i_name	: INST := ("mv  ","ldi ","add ","sub ","ld  ","st  ","mvnz","mvgt","and ","bra ","brnz","brgt","brz ","brmi","send","rcv ");
+  constant i_name	: INST := ("mv  ","ldi ","add ","sub ","ld  ","st  ","mvnz","mvgt","and ","bra ","brnz","brgt","brz ","brmi","rcv ","send");
 
 -- Table de constantes pour le multiplexeur
 -- codes de 0000 Ã  0111 : nanobus <= R_q() (PC = 0111,NumProc=0110)
@@ -327,7 +327,7 @@ BEGIN
   BEGIN
     
 -- pragma synthesis_off
-    cur_inst <=i_name(conv_integer(I));	-- recupere instruction enum
+--    cur_inst <=i_name(conv_integer(I));	-- recupere instruction enum
 -- pragma synthesis_on
 
     Ra_ld<='0'; 				-- tous registres deselectionnes
