@@ -39,7 +39,7 @@ architecture behavior of PROC is
   end component;
 
   type STATE is (fetch1,fetch2,exe_1,exe_2,exe_3,exe_4); 		-- Etats du processeur
-  type INST is array (0 to 13) of string(1 to 4);			-- liste jeu instructions
+  type INST is array (0 to 15) of string(1 to 4);			-- liste jeu instructions
 
 
   signal p_state,p_next_state : STATE;
@@ -51,7 +51,7 @@ architecture behavior of PROC is
   signal offset_PC 	: std_logic_vector(len_data_bus-1 downto 0); -- offset en cas de branch
   signal res_alu 		: std_logic_vector(len_data_bus-1 downto 0); -- resultat alu
   signal Z_bit,G_bit : std_logic;											-- drapeaux resultat alu
-PROC
+
 -- definition registres
 -- selections
   signal R_ld				: std_logic_vector(0 to 7); 			-- selection registres R()
@@ -100,7 +100,7 @@ PROC
 
   signal mux_sel	: std_logic_vector(3 downto 0);	-- selection registres R(), A, G, I dans mux
 
-  signal I 				: std_logic_vector(3 downto 0); -- instruction
+  signal I 				: std_logic_vector(4 downto 0); -- instruction
   signal rx,ry 		: std_logic_vector(2 downto 0); -- champs Rx et Ry de l'instruction
 
   signal nanobus 	: std_logic_vector(len_data_bus-1 downto 0); -- bus data interne
@@ -124,7 +124,7 @@ PROC
   constant i_send 	: std_logic_vector( 4 downto 0 ) := "10001";
   constant i_rcv 	: std_logic_vector( 4 downto 0 ) := "01111";
 
-  constant i_name	: INST := ("mv","ldi","add","sub","ld","st","mvnz","mvgt","and ","bra","brnz","brgt","brz","brmi","sendn","rcv");
+  constant i_name	: INST := ("mv  ","ldi ","add ","sub ","ld  ","st  ","mvnz","mvgt","and ","bra ","brnz","brgt","brz ","brmi","send","rcv ");
 
 -- Table de constantes pour le multiplexeur
 -- codes de 0000 Ã  0111 : nanobus <= R_q() (PC = 0111,NumProc=0110)
@@ -152,10 +152,6 @@ BEGIN
     if (clk'event and clk = '1') then
       if resetn='0' then  -- raz general
         Rw_q 	<='0';
-        Rw_n_q  <= '0';
-        Rw_s_q  <= '0';
-        Rw_e_q  <= '0';
-        Rw_w_q  <= '0';
         Ra_q 	<=(others=>'0');
         for i in 0 to 7 loop
           R_q(i)<=(others=>'0');
@@ -181,10 +177,6 @@ BEGIN
         Rd_s_q  <= Rd_s_d;
         Rd_e_q  <= Rd_e_d;
         Rd_w_q  <= Rd_w_d;
-        Rw_n_q <= Rw_n_d;
-        Rw_s_q <= Rw_s_d;
-        Rw_e_q <= Rw_e_q;
-        Rw_w_q <= Rw_w_d;
         Rw_q	<= Rw_d;
         Rc_n_q<=Rc_n_i;
         Rc_n_i<=Rc_n_d;
@@ -296,7 +288,7 @@ BEGIN
     logic_out_n <=dmux_out_logic(3) and dmux_out_logic(2) and (not dmux_out_logic(1)) and (not dmux_out_logic(0));
     logic_out_s <=(not dmux_out_logic(1)) and (not dmux_out_logic(0)) and (dmux_out_logic(3) xor dmux_out_logic(2));
     logic_out_w <=dmux_out_logic(1) and dmux_out_logic(0);
-    logic_out_e <= ((not dmux_out_logic(0)) or (not dmux_out_logic(1))) and ((not dmux_out_logic(3)) or (not dmux_out_logic(2)) or dmux_out_logic(1) or dmux_out_logic(0) or (not (dmux_out_logic(3) xor dmux_out_logic(2)));
+    logic_out_e <= ((not dmux_out_logic(0)) or (not dmux_out_logic(1))) and ((not dmux_out_logic(3)) or (not dmux_out_logic(2)) or dmux_out_logic(1) or dmux_out_logic(0) or (not (dmux_out_logic(3) xor dmux_out_logic(2))));
   end process logique_direction_envoi;
 
 -- Process combinatoire qui maintient le bit de contrÃ´le Ã  1 pendant 2 cycles
@@ -479,6 +471,7 @@ BEGIN
             sig_send<='1'; --ContrÃ´le des mux et du demux
             mux_sel<='0' & rx; --ecriture de la destination dans nanobus
             p_next_state <= exe_4;
+          when others =>            
         end case;
         
       when exe_4 =>
@@ -489,7 +482,8 @@ BEGIN
                                        --le contrÃ´le de la bascule 16bits
                                        --d'envoi est fait par la logique de
                                        --calcul de direction
-		end case;
+          when others =>
+	end case;
     end case;
     
   END PROCESS;

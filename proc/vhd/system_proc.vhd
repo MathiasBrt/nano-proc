@@ -114,7 +114,15 @@ U1:proc port map(
 	       Clk=>Clock,
 	       write=>wr,
 	       Rd_out=>data_in,
-	       Rad_out =>sys_add_bus);
+	       Rad_out =>sys_add_bus,
+               send_out_n => s_data_in_n,
+               send_out_s => s_data_in_s,
+               send_out_e => s_data_in_e,
+               send_out_w => s_data_in_w,
+               north_en => s_wr_en_n,
+               south_en => s_wr_en_s,
+               east_en => s_wr_en_e,
+               west_en => s_wr_en_w);
 
 U2:ram 	generic map (len_addr_bus-2,len_data_bus) -- Adresses sur 6 bits
 	port map(
@@ -138,10 +146,11 @@ U4 : port_io port map(
 		dat_out_io => data_port,
 		out_io => io_out);
 
--- Mapping des 4 fifos
+-- Mapping des 4 fifos (North, South, East, West)
 U5 : STD_FIFO port map (
   clk     => Clock,
   resetn  => Resetn,
+  WriteEn => s_wr_en_n,
   DataIn => s_data_in_n,
   ReadEn  => s_rd_en_n,
   DataOut => data_out_n,
@@ -151,6 +160,7 @@ U5 : STD_FIFO port map (
 U6 : STD_FIFO port map (
   clk     => Clock,
   resetn  => Resetn,
+  WriteEn => s_wr_en_s,
   DataIn => s_data_in_s,
   ReadEn  => s_rd_en_s,
   DataOut => data_out_s,
@@ -160,6 +170,7 @@ U6 : STD_FIFO port map (
 U7 : STD_FIFO port map (
   clk     => Clock,
   resetn  => Resetn,
+  WriteEn => s_wr_en_e,
   DataIn => s_data_in_e,
   ReadEn  => s_rd_en_e,
   DataOut => data_out_e,
@@ -169,6 +180,7 @@ U7 : STD_FIFO port map (
 U8 : STD_FIFO port map (
   clk     => Clock,
   resetn  => Resetn,
+  WriteEn => s_wr_en_w,
   DataIn => s_data_in_w,
   ReadEn  => s_rd_en_w,
   DataOut => data_out_w,

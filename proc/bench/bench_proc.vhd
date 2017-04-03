@@ -67,7 +67,7 @@ U1:SYSTEM_PROC port map
         data_out_n => data_out_n,
         data_out_s => data_out_s,
         data_out_e => data_out_e,
-        data_out_w => data_out_w,
+        data_out_w => data_out_w
         
 );
 
