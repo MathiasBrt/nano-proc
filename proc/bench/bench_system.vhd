@@ -42,23 +42,23 @@ end component;
 signal Resetn, Clock 	: std_logic:='0';
 signal io_inp 		: std_logic_vector(31 downto 0);
 signal io_out 		: std_logic_vector(31 downto 0);
-signal data_out_n :  std_logic_vector(len_data_bus-1 downto 0) := ( others => 'U' );
-signal data_out_s : std_logic_vector(len_data_bus-1 downto 0):= ( others => 'U' );
-signal data_out_e : std_logic_vector(len_data_bus-1 downto 0):= ( others => 'U' );
-signal data_out_w : std_logic_vector(len_data_bus-1 downto 0):= ( others => 'U' );
-signal fifo_empty_n : std_logic := 'U';
-signal fifo_empty_s : std_logic := 'U';
-signal fifo_empty_e : std_logic := 'U';
-signal fifo_empty_w : std_logic := 'U';
-signal fifo_full_n : std_logic := 'U';
-signal fifo_full_s :  std_logic := 'U';
-signal fifo_full_e : std_logic := 'U';
-signal fifo_full_w : std_logic := 'U';
+signal data_out_n :  std_logic_vector(len_data_bus-1 downto 0);
+signal data_out_s : std_logic_vector(len_data_bus-1 downto 0);
+signal data_out_e : std_logic_vector(len_data_bus-1 downto 0);
+signal data_out_w : std_logic_vector(len_data_bus-1 downto 0);
+signal fifo_empty_n : std_logic;
+signal fifo_empty_s : std_logic;
+signal fifo_empty_e : std_logic;
+signal fifo_empty_w : std_logic;
+signal fifo_full_n : std_logic;
+signal fifo_full_s :  std_logic;
+signal fifo_full_e : std_logic;
+signal fifo_full_w : std_logic;
       
 
 begin
 
-U1:SYSTEM_PROC port map
+NANOPROC_1:SYSTEM_PROC port map
 (
         Resetn => Resetn, 
  	Clock => Clock,
@@ -67,7 +67,15 @@ U1:SYSTEM_PROC port map
         data_out_n => data_out_n,
         data_out_s => data_out_s,
         data_out_e => data_out_e,
-        data_out_w => data_out_w
+        data_out_w => data_out_w,
+        fifo_empty_n => fifo_empty_n,
+        fifo_empty_s => fifo_empty_s,
+        fifo_empty_e => fifo_empty_e,
+        fifo_empty_w => fifo_empty_w,
+        fifo_full_n => fifo_full_n,
+        fifo_full_s => fifo_full_s,
+        fifo_full_e => fifo_full_e,
+        fifo_full_w => fifo_full_w
         
 );
 

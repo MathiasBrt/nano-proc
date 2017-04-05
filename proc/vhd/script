@@ -41,6 +41,11 @@ if [ "$?" != 0 ]
 then exit -1
 fi
 
+vcom -work lib_nanoproc fifo.vhd
+if [ "$?" != 0 ]
+then exit -1
+fi
+
 vcom -work lib_nanoproc system_proc.vhd
 if [ "$?" != 0 ]
 then exit -1

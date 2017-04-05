@@ -2,6 +2,9 @@ library IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.NUMERIC_STD.ALL;
 
+library lib_nanoproc;
+USE lib_nanoproc.NANO_PKG.all;
+
 entity STD_FIFO is
   Port ( 
     CLK		: in  STD_LOGIC;

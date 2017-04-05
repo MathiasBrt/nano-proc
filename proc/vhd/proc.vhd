@@ -347,10 +347,10 @@ BEGIN
     offset_PC(5 downto 0) <= rx & ry;			-- 6 bits de l'offset PC pour branch
     Rad_ld <='0';
     Rd_ld <='0';
-    Rd_n_ld<='0';
-    Rd_s_ld<='0';
-    Rd_e_ld<='0';
-    Rd_w_ld<='0';
+    --Rd_n_ld<='0';
+    --Rd_s_ld<='0';
+    --Rd_e_ld<='0';
+    --Rd_w_ld<='0';
     sig_send<='0';
     
     -- Machine a etats :

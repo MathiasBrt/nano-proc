@@ -136,7 +136,7 @@ U3: rom port map(				-- adresses sur 7 bits
 		address=> sys_add_rom,
 		output=> data_rom);
 
-U4 : port_io port map(
+U4: port_io port map(
 		clk => Clock,
 		reset_n=>Resetn,
 		ecr => ecr_port,
@@ -147,7 +147,7 @@ U4 : port_io port map(
 		out_io => io_out);
 
 -- Mapping des 4 fifos (North, South, East, West)
-U5 : STD_FIFO port map (
+FIFO_N : STD_FIFO port map (
   clk     => Clock,
   resetn  => Resetn,
   WriteEn => s_wr_en_n,
@@ -157,7 +157,7 @@ U5 : STD_FIFO port map (
   Empty   => fifo_empty_n,
   Full    => fifo_full_n);
 
-U6 : STD_FIFO port map (
+FIFO_S : STD_FIFO port map (
   clk     => Clock,
   resetn  => Resetn,
   WriteEn => s_wr_en_s,
@@ -167,7 +167,7 @@ U6 : STD_FIFO port map (
   Empty   => fifo_empty_s,
   Full    => fifo_full_s);
 
-U7 : STD_FIFO port map (
+FIFO_E : STD_FIFO port map (
   clk     => Clock,
   resetn  => Resetn,
   WriteEn => s_wr_en_e,
@@ -177,7 +177,7 @@ U7 : STD_FIFO port map (
   Empty   => fifo_empty_e,
   Full    => fifo_full_e);
 
-U8 : STD_FIFO port map (
+FIFO_W : STD_FIFO port map (
   clk     => Clock,
   resetn  => Resetn,
   WriteEn => s_wr_en_w,
