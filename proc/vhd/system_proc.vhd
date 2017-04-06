@@ -15,6 +15,10 @@ USE lib_nanoproc.nano_pkg.all;
 entity SYSTEM_PROC is
 PORT ( 	Resetn, Clock 	: in std_logic;
 	io_inp 		: in std_logic_vector(31 downto 0);
+        rd_en_n : in std_logic;
+        rd_en_s : in std_logic;
+        rd_en_e : in std_logic;
+        rd_en_w : in std_logic;
 	io_out 		: out std_logic_vector(31 downto 0);
         data_out_n : out std_logic_vector(len_data_bus-1 downto 0);
         data_out_s : out std_logic_vector(len_data_bus-1 downto 0);
@@ -104,7 +108,6 @@ signal 		sys_add_rom	: std_logic_vector(len_addr_bus-2 downto 0);
 signal		sys_add_port	: std_logic;
 signal s_data_in_n,s_data_in_s,s_data_in_e,s_data_in_w : std_logic_vector(len_data_bus-1 downto 0);
 signal s_wr_en_n,s_wr_en_s,s_wr_en_e,s_wr_en_w : std_logic;
-signal s_rd_en_n,s_rd_en_s,s_rd_en_e,s_rd_en_w : std_logic;
 
 begin
 
@@ -152,7 +155,7 @@ FIFO_N : STD_FIFO port map (
   resetn  => Resetn,
   WriteEn => s_wr_en_n,
   DataIn => s_data_in_n,
-  ReadEn  => s_rd_en_n,
+  ReadEn  => rd_en_n,
   DataOut => data_out_n,
   Empty   => fifo_empty_n,
   Full    => fifo_full_n);
@@ -162,7 +165,7 @@ FIFO_S : STD_FIFO port map (
   resetn  => Resetn,
   WriteEn => s_wr_en_s,
   DataIn => s_data_in_s,
-  ReadEn  => s_rd_en_s,
+  ReadEn  => rd_en_s,
   DataOut => data_out_s,
   Empty   => fifo_empty_s,
   Full    => fifo_full_s);
@@ -172,7 +175,7 @@ FIFO_E : STD_FIFO port map (
   resetn  => Resetn,
   WriteEn => s_wr_en_e,
   DataIn => s_data_in_e,
-  ReadEn  => s_rd_en_e,
+  ReadEn  => rd_en_e,
   DataOut => data_out_e,
   Empty   => fifo_empty_e,
   Full    => fifo_full_e);
@@ -182,7 +185,7 @@ FIFO_W : STD_FIFO port map (
   resetn  => Resetn,
   WriteEn => s_wr_en_w,
   DataIn => s_data_in_w,
-  ReadEn  => s_rd_en_w,
+  ReadEn  => rd_en_w,
   DataOut => data_out_w,
   Empty   => fifo_empty_w,
   Full    => fifo_full_w);

@@ -22,6 +22,10 @@ port
 (
  	Resetn, Clock 	: in std_logic;
 	io_inp 		: in std_logic_vector(31 downto 0);
+        rd_en_n : in std_logic;
+        rd_en_s : in std_logic;
+        rd_en_e : in std_logic;
+        rd_en_w : in std_logic;
 	io_out 		: out std_logic_vector(31 downto 0);
         data_out_n : out std_logic_vector(len_data_bus-1 downto 0);
         data_out_s : out std_logic_vector(len_data_bus-1 downto 0);
@@ -41,6 +45,10 @@ end component;
 -- signaux d'interface du systeme
 signal Resetn, Clock 	: std_logic:='0';
 signal io_inp 		: std_logic_vector(31 downto 0);
+signal rd_en_n : std_logic;
+signal rd_en_s : std_logic;
+signal rd_en_e : std_logic;
+signal rd_en_w : std_logic;
 signal io_out 		: std_logic_vector(31 downto 0);
 signal data_out_n :  std_logic_vector(len_data_bus-1 downto 0);
 signal data_out_s : std_logic_vector(len_data_bus-1 downto 0);
@@ -63,6 +71,10 @@ NANOPROC_1:SYSTEM_PROC port map
         Resetn => Resetn, 
  	Clock => Clock,
         io_inp => io_inp,
+        rd_en_n => rd_en_n,
+        rd_en_s => rd_en_s,
+        rd_en_e => rd_en_e,
+        rd_en_w => rd_en_w,
         io_out => io_out,
         data_out_n => data_out_n,
         data_out_s => data_out_s,
@@ -86,6 +98,9 @@ Clock <= not(Clock) after CLOCK_PERIOD/2;
 -- generation du reset
 resetn <=	'0',
 		'1' after 20 ns ;
+
+-- controle du read enable
+rd_en_n <= '0', '1' after 410 ns, '0' after 450 ns;
 
 end architecture;
 

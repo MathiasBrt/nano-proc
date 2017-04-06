@@ -194,7 +194,7 @@ BEGIN
 -- connexion des registres avec entrees de validation
 
   reg_p : Process(DIN,nanobus,res_alu,incr_pc,R_ld,R_q,Ra_ld,Ra_q,Rw_q,br_pc,offset_pc,
-                  Rd_ld,Rd_q, Ri_ld,Ri_q, Rad_ld,Rad_q,Rg_ld,Rg_q,Rd_n_q,Rd_s_q,Rd_e_q,Rd_w_q)
+                  Rd_ld,Rd_q, Ri_ld,Ri_q, Rad_ld,Rad_q,Rg_ld,Rg_q,Rd_n_q,Rd_s_q,Rd_e_q,Rd_w_q,Rd_n_ld,Rd_s_ld,Rd_e_ld,Rd_w_ld)
   Begin
     
     -- fonction banc de registres et autres registres
@@ -288,7 +288,7 @@ BEGIN
     logic_out_n <=dmux_out_logic(3) and dmux_out_logic(2) and (not dmux_out_logic(1)) and (not dmux_out_logic(0));
     logic_out_s <=(not dmux_out_logic(1)) and (not dmux_out_logic(0)) and (dmux_out_logic(3) xor dmux_out_logic(2));
     logic_out_w <=dmux_out_logic(1) and dmux_out_logic(0);
-    logic_out_e <= ((not dmux_out_logic(0)) or (not dmux_out_logic(1))) and ((not dmux_out_logic(3)) or (not dmux_out_logic(2)) or dmux_out_logic(1) or dmux_out_logic(0) or (not (dmux_out_logic(3) xor dmux_out_logic(2))));
+    logic_out_e <= ((not dmux_out_logic(0)) or (not dmux_out_logic(1))) and ((not dmux_out_logic(3)) or (not dmux_out_logic(2)) or dmux_out_logic(1) or dmux_out_logic(0)) and (dmux_out_logic(1) or dmux_out_logic(0) or (not (dmux_out_logic(3) xor dmux_out_logic(2))));
   end process logique_direction_envoi;
 
 -- Process combinatoire qui maintient le bit de contrÃ´le Ã  1 pendant 2 cycles
