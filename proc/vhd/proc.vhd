@@ -73,7 +73,8 @@ architecture behavior of PROC is
   
 -- signaux et registres de changement de contexte
   signal R_save_q,R_save_d : REGISTER_FILE(0 to 7);
-  signal ctx_ctrl : std_logic;
+  signal save_ctx,load_ctx : std_logic;
+  signal Mux_to_reg : REGISTER_FILE(0 to 7);
 -- sorties registres									
   signal R_q,R_d 		: REGISTER_FILE(0 to 7);
   signal Ra_q,Ra_d	: std_logic_vector(len_data_bus-1 downto 0);
@@ -161,6 +162,7 @@ BEGIN
         Ra_q 	<=(others=>'0');
         for i in 0 to 7 loop
           R_q(i)<=(others=>'0');
+          R_save_q(i)<=(others=>'0');
         end loop;
         Rd_q	<=(others=>'0');
         Rad_q	<=(others=>'0');
@@ -192,6 +194,7 @@ BEGIN
         Rc_e_i<=Rc_e_d;
         Rc_w_q<=Rc_w_i;
         Rc_w_i<=Rc_w_d;
+        R_save_q<=R_save_d;
       end if;
     end if;
   END Process;
@@ -200,13 +203,22 @@ BEGIN
 -- connexion des registres avec entrees de validation
 
   reg_p : Process(DIN,nanobus,res_alu,incr_pc,R_ld,R_q,Ra_ld,Ra_q,Rw_q,br_pc,offset_pc,
-                  Rd_ld,Rd_q, Ri_ld,Ri_q, Rad_ld,Rad_q,Rg_ld,Rg_q,Rd_n_q,Rd_s_q,Rd_e_q,Rd_w_q,Rd_n_ld,Rd_s_ld,Rd_e_ld,Rd_w_ld)
+                  Rd_ld,Rd_q, Ri_ld,Ri_q, Rad_ld,Rad_q,Rg_ld,Rg_q,Rd_n_q,Rd_s_q,Rd_e_q,Rd_w_q,Rd_n_ld,Rd_s_ld,Rd_e_ld,Rd_w_ld,save_ctx,load_ctx)
   Begin
     
     -- fonction banc de registres et autres registres
     for i in 0 to 7 loop
       R_d(i)<=R_q(i); 		-- maintien par defaut
-      if (R_ld(i)='1') then R_d(i)<=nanobus; end if; -- charge nanobus si load actif
+      R_save_d(i)<=R_save_q(i);
+      if (load_ctx='1') then
+        Mux_to_reg(i)<=R_save_q(i);
+      else
+        Mux_to_reg(i)<=nanobus;
+      end if;
+      if (save_ctx='1') then
+        R_save_d(i)<=R_q(i); 		-- chargement des registres de sauvegarde
+      end if;
+      if (R_ld(i)='1') then R_d(i)<=Mux_to_reg(i); end if; -- charge nanobus si load actif
     end loop;
     if incr_pc='1' then R_d(7)<=R_q(7)+1; end if; 	-- compteur PC
     if br_pc='1' then R_d(7)<=R_q(7)+offset_PC; end if; 	-- compteur PC+offset de branch
@@ -288,25 +300,27 @@ BEGIN
     end if;
   end process demux_p;
 
--- Process combinatoire de sauvegarde du contexte
-  save_ctx_p : process (R_q, ctx_ctrl)
-  begin
-    if (ctx_ctrl='1') then
-      for i in 0 to 7 loop
-        R_save_d(i)<=R_q(i); 		-- chargement des registres de sauvegarde
-      end loop;
-    end if;
-  end process save_ctx_p;
+---- Process combinatoire de sauvegarde du contexte
+--  save_ctx_p : process (save_ctx)
+--  begin
+--      for i in 0 to 7 loop
+--        if (save_ctx='1') then
+--          R_save_d(i)<=R_q(i); 		-- chargement des registres de sauvegarde
+--        end if;
+--      end loop;
+--  end process save_ctx_p;
 
--- Process combinatoire de recharge du contexte
-  load_ctx_p : process (ctx_ctrl)
-  begin
-    if (ctx_ctrl='1') then
-      for i in 0 to 7 loop
-        R_d(i)<=R_save_q(i);
-      end loop;
-    end if;
-  end process load_ctx_p;
+---- Process combinatoire de recharge du contexte
+--  load_ctx_p : process (load_ctx)
+--  begin
+--      for i in 0 to 7 loop
+--        if (load_ctx='1') then
+--          Mux_to_reg(i)<=R_save_q(i);
+--        else
+--          Mux_to_reg(i)<=nanobus;
+--        end if;
+--      end loop;
+--  end process load_ctx_p;
   
 -- Process combinatoire qui calcule la direction d'envoi
   logique_direction_envoi : process (dmux_out_logic)
@@ -374,7 +388,8 @@ BEGIN
     Rad_ld <='0';
     Rd_ld <='0';
     sig_send<='0';
-    ctx_ctrl<='0';    
+    save_ctx<='0';
+    load_ctx<='0';
     -- Machine a etats :
 
     CASE p_state is
@@ -447,10 +462,11 @@ BEGIN
             mux_sel<="0110"; --sÃ©lectionne le registre Numproc
             Ra_ld<='1';
           when i_sctx =>
-            ctx_ctrl<='1';
+            save_ctx<='1';
             p_next_state <= fetch1;
           when i_lctx =>
-            ctx_ctrl<='1';
+            load_ctx<='1';
+            R_ld<=(others=>'1');
             p_next_state <= fetch1;
           when others =>
         end case;
