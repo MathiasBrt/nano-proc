@@ -24,14 +24,14 @@ PORT ( 	Resetn, Clock 	: in std_logic;
         data_out_s : out std_logic_vector(len_data_bus-1 downto 0);
         data_out_e : out std_logic_vector(len_data_bus-1 downto 0);
         data_out_w : out std_logic_vector(len_data_bus-1 downto 0);
-        fifo_empty_n : out std_logic;
-        fifo_empty_s : out std_logic;
-        fifo_empty_e : out std_logic;
-        fifo_empty_w : out std_logic;
-        fifo_full_n : out std_logic;
-        fifo_full_s : out std_logic;
-        fifo_full_e : out std_logic;
-        fifo_full_w : out std_logic
+        fifo_empty_n_out : out std_logic;
+        fifo_empty_s_out : out std_logic;
+        fifo_empty_e_out : out std_logic;
+        fifo_empty_w_out : out std_logic;
+        fifo_empty_n_in : in std_logic;
+        fifo_empty_s_in : in std_logic;
+        fifo_empty_e_in : in std_logic;
+        fifo_empty_w_in : in std_logic
       );
 end SYSTEM_PROC;
 
@@ -54,6 +54,8 @@ port ( 	din 		: in std_logic_vector(len_data_bus-1 downto 0);
         send_out_s : out std_logic_vector(len_data_bus-1 downto 0);
         send_out_e : out std_logic_vector(len_data_bus-1 downto 0);
         send_out_w : out std_logic_vector(len_data_bus-1 downto 0);
+        rcv_data : in std_logic_vector(len_data_bus-1 downto 0);      -- Data sortant venant de la FIFO PRINCIPALe
+        rcv_interuption : in STD_LOGIC;                               -- Signal d'interuption venant de la sortie Empty de la FIFO PRINCIPALE
         north_en : out std_logic;
         south_en : out std_logic;
         east_en : out std_logic;
@@ -100,14 +102,18 @@ port (
   );
 end component;
 
-signal          w_ram,wr,ecr_port  :  std_logic;
-signal          d_in,data_ram,data_rom,data_in,data_port  :  std_logic_vector(len_data_bus-1 downto 0);
-signal          sys_add_bus  	: std_logic_vector(len_addr_bus-1 downto 0);
+signal    w_ram,wr,ecr_port  :  std_logic;
+signal    d_in,data_ram,data_rom,data_in,data_port  :  std_logic_vector(len_data_bus-1 downto 0);
+signal    sys_add_bus  	: std_logic_vector(len_addr_bus-1 downto 0);
 signal 		sys_add_ram	: std_logic_vector(len_addr_bus-3 downto 0);
 signal 		sys_add_rom	: std_logic_vector(len_addr_bus-2 downto 0);
 signal		sys_add_port	: std_logic;
-signal s_data_in_n,s_data_in_s,s_data_in_e,s_data_in_w : std_logic_vector(len_data_bus-1 downto 0);
-signal s_wr_en_n,s_wr_en_s,s_wr_en_e,s_wr_en_w : std_logic;
+signal    s_data_in_n,s_data_in_s,s_data_in_e,s_data_in_w : std_logic_vector(len_data_bus-1 downto 0);
+signal    s_wr_en_n,s_wr_en_s,s_wr_en_e,s_wr_en_w,  : std_logic;
+signal    fifo_full_n_sig, fifo_full_s_sig, fifo_full_e_sig, fifo_full_w_sig, fifo_principale_full : std_logic; --signal fifo alerte plein
+signal    bus_inter_fifo : STD_LOGIC_VECTOR (len_data_bus-1 downto 0);
+Signal    fifo_principale_write_en, fifo_principale_read_en, fifo_principale_empty, fifo_principale_full : STD_LOGIC;
+signal    fifo_principale_data_out : STD_LOGIC_VECTOR (len_data_bus-1 downto 0);
 
 begin
 
@@ -157,8 +163,8 @@ FIFO_N : STD_FIFO port map (
   DataIn => s_data_in_n,
   ReadEn  => rd_en_n,
   DataOut => data_out_n,
-  Empty   => fifo_empty_n,
-  Full    => fifo_full_n);
+  Empty   => fifo_empty_n_out,
+  Full    => fifo_full_n_sig);
 
 FIFO_S : STD_FIFO port map (
   clk     => Clock,
@@ -167,8 +173,8 @@ FIFO_S : STD_FIFO port map (
   DataIn => s_data_in_s,
   ReadEn  => rd_en_s,
   DataOut => data_out_s,
-  Empty   => fifo_empty_s,
-  Full    => fifo_full_s);
+  Empty   => fifo_empty_s_out,
+  Full    => fifo_full_s_sig);
 
 FIFO_E : STD_FIFO port map (
   clk     => Clock,
@@ -177,8 +183,8 @@ FIFO_E : STD_FIFO port map (
   DataIn => s_data_in_e,
   ReadEn  => rd_en_e,
   DataOut => data_out_e,
-  Empty   => fifo_empty_e,
-  Full    => fifo_full_e);
+  Empty   => fifo_empty_e_out,
+  Full    => fifo_full_e_sig);
 
 FIFO_W : STD_FIFO port map (
   clk     => Clock,
@@ -187,9 +193,111 @@ FIFO_W : STD_FIFO port map (
   DataIn => s_data_in_w,
   ReadEn  => rd_en_w,
   DataOut => data_out_w,
-  Empty   => fifo_empty_w,
-  Full    => fifo_full_w);
+  Empty   => fifo_empty_w_out,
+  Full    => fifo_full_w_sig);
 
+FIFO_PRINCIPALE : STD_FIFO port map (
+  clk     => Clock,
+  resetn  => Resetn,
+  WriteEn => fifo_principale_write_en,
+  DataIn  => bus_inter_fifo,
+  ReadEn  => fifo_principale_read_en,
+  DataOut => fifo_principale_data_out,
+  Empty   => fifo_principale_empty;
+  Full    => fifo_principale_full);
+
+CONTROL_FIFO_PRINCIPALE : process (clk, resetn)
+variable ctrl_priorite : STD_LOGIC_VECTOR(3 downto 0);  -- Signal qui détermine quelque fifo pourra écrire dans la fifo principale en première
+                                                        -- "0001" = N; "0010" = S; "0100" = E; "1000" = W
+begin
+  if (resetn = '0') then 
+    rd_en_n = '0';
+    rd_en_s = '0';
+    rd_en_e = '0';
+    rd_en_w = '0';
+    ctrl_priorite = "0000";
+  if (clk='1' and clk'event) then
+    if (ctrl_priorite = "0001") then        -- ctrl_priorite à 0001 signifie que la fifo N est prioritaire à ce cycle
+      if (fifo_empty_n_in = '0') then
+        rd_en_n = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "0010";             -- La fifo S sera priotitaire au cycle suivant
+      elsif (fifo_empty_s_in = '0') then
+        rd_en_s = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "0100";
+      elsif (fifo_empty_e_in = '0') then
+        rd_en_e = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "1000";
+      elsif (fifo_empty_w_in = '0') then
+        rd_en_w = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "0001";
+      else
+        ctrl_priorite = "0001";
+      end if;
+    elsif (ctrl_priorite = "0010") then        -- ctrl_priorite à 0001 signifie que la fifo N est prioritaire à ce cycle
+      if (fifo_empty_s_in = '0') then
+        rd_en_s = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "0100";
+      elsif (fifo_empty_e_in = '0') then
+        rd_en_e = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "1000";
+      elsif (fifo_empty_w_in = '0') then
+        rd_en_w = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "0001";
+      elsif (fifo_empty_n_in = '0') then
+        rd_en_n = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "0010";
+      else
+        ctrl_priorite = "0010";
+      end if;
+    elsif (ctrl_priorite = "0100") then        -- ctrl_priorite à 0001 signifie que la fifo N est prioritaire à ce cycle
+      if (fifo_empty_e_in = '0') then
+        rd_en_e = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "1000";
+      elsif (fifo_empty_w_in = '0') then
+        rd_en_w = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "0001";
+      elsif (fifo_empty_n_in = '0') then
+        rd_en_n = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "0010";
+      elsif (fifo_empty_s_in = '0') then
+        rd_en_s = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "0100";
+      else
+        ctrl_priorite = "0100";
+      end if;
+    elsif (ctrl_priorite = "1000") then        -- ctrl_priorite à 0001 signifie que la fifo N est prioritaire à ce cycle
+      if (fifo_empty_w_in = '0') then
+        rd_en_w = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "0001";
+      elsif (fifo_empty_n_in = '0') then
+        rd_en_n = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "0010";
+      elsif (fifo_empty_s_in = '0') then
+        rd_en_s = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "0100";
+      elsif (fifo_empty_e_in = '0') then
+        rd_en_e = '1';
+        fifo_principale_write_en = '1';
+        ctrl_priorite = "1000";
+      else
+        ctrl_priorite = "1000";
+      end if;  
+    end if;
 
 process (sys_add_bus,wr,data_rom,data_ram,data_port)
 begin
