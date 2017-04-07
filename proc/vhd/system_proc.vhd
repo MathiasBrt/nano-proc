@@ -156,59 +156,65 @@ U4: port_io port map(
 		out_io => io_out);
 
 -- Mapping des 4 fifos (North, South, East, West)
-FIFO_N : STD_FIFO port map (
-  clk     => Clock,
-  resetn  => Resetn,
-  WriteEn => s_wr_en_n,
-  DataIn => s_data_in_n,
-  ReadEn  => rd_en_n,
-  DataOut => data_out_n,
-  Empty   => fifo_empty_n_out,
-  Full    => fifo_full_n_sig);
+FIFO_N : STD_FIFO generic map (10) 
+  port map (
+    clk     => Clock,
+    resetn  => Resetn,
+    WriteEn => s_wr_en_n,
+    DataIn  => s_data_in_n,
+    ReadEn  => rd_en_n,
+    DataOut => data_out_n,
+    Empty   => fifo_empty_n_out,
+    Full    => fifo_full_n_sig);
 
-FIFO_S : STD_FIFO port map (
-  clk     => Clock,
-  resetn  => Resetn,
-  WriteEn => s_wr_en_s,
-  DataIn => s_data_in_s,
-  ReadEn  => rd_en_s,
-  DataOut => data_out_s,
-  Empty   => fifo_empty_s_out,
-  Full    => fifo_full_s_sig);
+FIFO_S : STD_FIFO generic map (10)
+  port map (
+    clk     => Clock,
+    resetn  => Resetn,
+    WriteEn => s_wr_en_s,
+    DataIn => s_data_in_s,
+    ReadEn  => rd_en_s,
+    DataOut => data_out_s,
+    Empty   => fifo_empty_s_out,
+    Full    => fifo_full_s_sig);
 
-FIFO_E : STD_FIFO port map (
-  clk     => Clock,
-  resetn  => Resetn,
-  WriteEn => s_wr_en_e,
-  DataIn => s_data_in_e,
-  ReadEn  => rd_en_e,
-  DataOut => data_out_e,
-  Empty   => fifo_empty_e_out,
-  Full    => fifo_full_e_sig);
+FIFO_E : STD_FIFO generic map (10) 
+  port map (
+    clk     => Clock,
+    resetn  => Resetn,
+    WriteEn => s_wr_en_e,
+    DataIn => s_data_in_e,
+    ReadEn  => rd_en_e,
+    DataOut => data_out_e,
+    Empty   => fifo_empty_e_out,
+    Full    => fifo_full_e_sig);
 
-FIFO_W : STD_FIFO port map (
-  clk     => Clock,
-  resetn  => Resetn,
-  WriteEn => s_wr_en_w,
-  DataIn => s_data_in_w,
-  ReadEn  => rd_en_w,
-  DataOut => data_out_w,
-  Empty   => fifo_empty_w_out,
-  Full    => fifo_full_w_sig);
+FIFO_W : STD_FIFO generic map (10) 
+  port map (
+    clk     => Clock,
+    resetn  => Resetn,
+    WriteEn => s_wr_en_w,
+    DataIn => s_data_in_w,
+    ReadEn  => rd_en_w,
+    DataOut => data_out_w,
+    Empty   => fifo_empty_w_out,
+    Full    => fifo_full_w_sig);
 
-FIFO_PRINCIPALE : STD_FIFO port map (
-  clk     => Clock,
-  resetn  => Resetn,
-  WriteEn => fifo_principale_write_en,
-  DataIn  => bus_inter_fifo,
-  ReadEn  => fifo_principale_read_en,
-  DataOut => fifo_principale_data_out,
-  Empty   => fifo_principale_empty;
-  Full    => fifo_principale_full);
+FIFO_PRINCIPALE : STD_FIFO generic map (40) 
+  port map (
+    clk     => Clock,
+    resetn  => Resetn,
+    WriteEn => fifo_principale_write_en,
+    DataIn  => bus_inter_fifo,
+    ReadEn  => fifo_principale_read_en,
+    DataOut => fifo_principale_data_out,
+    Empty   => fifo_principale_empty;
+    Full    => fifo_principale_full);
 
 CONTROL_FIFO_PRINCIPALE : process (clk, resetn)
-variable ctrl_priorite : STD_LOGIC_VECTOR(3 downto 0);  -- Signal qui détermine quelque fifo pourra écrire dans la fifo principale en première
+variable ctrl_priorite, maintien_priorite : STD_LOGIC_VECTOR(3 downto 0);  -- Signal qui détermine quelque fifo pourra écrire dans la fifo principale en première
                                                         -- "0001" = N; "0010" = S; "0100" = E; "1000" = W
+variable bit_etat : STD_LOGIC; -- 0 si la fifo envoie son premier mot, 1 sinon.
 begin
   if (resetn = '0') then 
     rd_en_n = '0';
@@ -216,88 +222,30 @@ begin
     rd_en_e = '0';
     rd_en_w = '0';
     ctrl_priorite = "0000";
+    maintien_priorite = "0000";
+    bit_etat = '1';
+
   if (clk='1' and clk'event) then
-    if (ctrl_priorite = "0001") then        -- ctrl_priorite à 0001 signifie que la fifo N est prioritaire à ce cycle
-      if (fifo_empty_n_in = '0') then
-        rd_en_n = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "0010";             -- La fifo S sera priotitaire au cycle suivant
-      elsif (fifo_empty_s_in = '0') then
-        rd_en_s = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "0100";
-      elsif (fifo_empty_e_in = '0') then
-        rd_en_e = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "1000";
-      elsif (fifo_empty_w_in = '0') then
-        rd_en_w = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "0001";
-      else
-        ctrl_priorite = "0001";
-      end if;
-    elsif (ctrl_priorite = "0010") then        -- ctrl_priorite à 0001 signifie que la fifo N est prioritaire à ce cycle
-      if (fifo_empty_s_in = '0') then
-        rd_en_s = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "0100";
-      elsif (fifo_empty_e_in = '0') then
-        rd_en_e = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "1000";
-      elsif (fifo_empty_w_in = '0') then
-        rd_en_w = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "0001";
-      elsif (fifo_empty_n_in = '0') then
-        rd_en_n = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "0010";
-      else
-        ctrl_priorite = "0010";
-      end if;
-    elsif (ctrl_priorite = "0100") then        -- ctrl_priorite à 0001 signifie que la fifo N est prioritaire à ce cycle
-      if (fifo_empty_e_in = '0') then
-        rd_en_e = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "1000";
-      elsif (fifo_empty_w_in = '0') then
-        rd_en_w = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "0001";
-      elsif (fifo_empty_n_in = '0') then
-        rd_en_n = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "0010";
-      elsif (fifo_empty_s_in = '0') then
-        rd_en_s = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "0100";
-      else
-        ctrl_priorite = "0100";
-      end if;
-    elsif (ctrl_priorite = "1000") then        -- ctrl_priorite à 0001 signifie que la fifo N est prioritaire à ce cycle
-      if (fifo_empty_w_in = '0') then
-        rd_en_w = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "0001";
-      elsif (fifo_empty_n_in = '0') then
-        rd_en_n = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "0010";
-      elsif (fifo_empty_s_in = '0') then
-        rd_en_s = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "0100";
-      elsif (fifo_empty_e_in = '0') then
-        rd_en_e = '1';
-        fifo_principale_write_en = '1';
-        ctrl_priorite = "1000";
-      else
-        ctrl_priorite = "1000";
-      end if;  
+    if (bit_etat='0') then
+      rd_en_n = (ctrl_priorite(0) and (not fifo_empty_n_in)) or (ctrl_priorite(1) and fifo_empty_s_in and fifo_empty_e_in and fifo_empty_w_in and (not fifo_empty_n_in)) or (ctrl_priorite(2) and fifo_empty_e_fifo and fifo_empty_w_in and (not fifo_empty_n_in)) or (ctrl_priorite(3) and fifo_empty_w_in and (not fifo_empty_n_in))
+      rd_en_s = (ctrl_priorite(1) and (not fifo_empty_s_in)) or (ctrl_priorite(2) and fifo_empty_e_in and fifo_empty_w_in and fifo_empty_n_in and (not fifo_empty_s_in)) or (ctrl_priorite(3) and fifo_empty_w_fifo and fifo_empty_n_in and (not fifo_empty_s_in)) or (ctrl_priorite(0) and fifo_empty_n_in and (not fifo_empty_s_in))
+      rd_en_e = (ctrl_priorite(2) and (not fifo_empty_e_in)) or (ctrl_priorite(3) and fifo_empty_s_in and fifo_empty_e_in and fifo_empty_w_in and (not fifo_empty_n_in)) or (ctrl_priorite(0) and fifo_empty_e_fifo and fifo_empty_w_in and (not fifo_empty_e_in)) or (ctrl_priorite(1) and fifo_empty_w_in and (not fifo_empty_n_in))
+      rd_en_w = (ctrl_priorite(3) and (not fifo_empty_w_in)) or (ctrl_priorite(0) and fifo_empty_n_in and fifo_empty_s_in and fifo_empty_e_in and (not fifo_empty_w_in)) or (ctrl_priorite(1) and fifo_empty_s_fifo and fifo_empty_e_in and (not fifo_empty_w_in)) or (ctrl_priorite(2) and fifo_empty_e_in and (not fifo_empty_w_in))
+      maintien_priorite(0) = rd_en_n;
+      maintien_priorite(1) = rd_en_s;
+      maintien_priorite(2) = rd_en_e;
+      maintien_priorite(3) = rd_en_w;
+      bit_etat = rd_en_n or rd_en_s or rd_en_e or rd_en_w;
+    else
+      rd_en_n = maintien_priorite(0); -- On garde l'ordre du cycle précédent pour envoyer le deuxième mot de la même fifo.
+      rd_en_s = maintien_priorite(1);
+      rd_en_e = maintien_priorite(2);
+      rd_en_w = maintien_priorite(3);
+      ctrl_priorite = maintien_priorite(2) & maintien_priorite(1) & maintien_priorite(0) & maintien_priorite(3); -- On donne la priorité à la fifo suivante pour le cycle d'après.
+      bit_etat = '0';
     end if;
+  end if;
+
 
 process (sys_add_bus,wr,data_rom,data_ram,data_port)
 begin
