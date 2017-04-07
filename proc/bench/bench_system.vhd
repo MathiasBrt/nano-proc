@@ -22,23 +22,23 @@ port
 (
  	Resetn, Clock 	: in std_logic;
 	io_inp 		: in std_logic_vector(31 downto 0);
-        rd_en_n : in std_logic;
-        rd_en_s : in std_logic;
-        rd_en_e : in std_logic;
-        rd_en_w : in std_logic;
+        rd_en_n : out std_logic;
+        rd_en_s : out std_logic;
+        rd_en_e : out std_logic;
+        rd_en_w : out std_logic;
 	io_out 		: out std_logic_vector(31 downto 0);
         data_out_n : out std_logic_vector(len_data_bus-1 downto 0);
         data_out_s : out std_logic_vector(len_data_bus-1 downto 0);
         data_out_e : out std_logic_vector(len_data_bus-1 downto 0);
         data_out_w : out std_logic_vector(len_data_bus-1 downto 0);
-        fifo_empty_n : out std_logic;
-        fifo_empty_s : out std_logic;
-        fifo_empty_e : out std_logic;
-        fifo_empty_w : out std_logic;
-        fifo_full_n : out std_logic;
-        fifo_full_s : out std_logic;
-        fifo_full_e : out std_logic;
-        fifo_full_w : out std_logic
+        fifo_empty_n_out : out std_logic;
+        fifo_empty_s_out : out std_logic;
+        fifo_empty_e_out : out std_logic;
+        fifo_empty_w_out : out std_logic;
+        fifo_empty_n_in : in std_logic;
+        fifo_empty_s_in : in std_logic;
+        fifo_empty_e_in : in std_logic;
+        fifo_empty_w_in : in std_logic
       );
 end component;
 
@@ -54,15 +54,14 @@ signal data_out_n :  std_logic_vector(len_data_bus-1 downto 0);
 signal data_out_s : std_logic_vector(len_data_bus-1 downto 0);
 signal data_out_e : std_logic_vector(len_data_bus-1 downto 0);
 signal data_out_w : std_logic_vector(len_data_bus-1 downto 0);
-signal fifo_empty_n : std_logic;
-signal fifo_empty_s : std_logic;
-signal fifo_empty_e : std_logic;
-signal fifo_empty_w : std_logic;
-signal fifo_full_n : std_logic;
-signal fifo_full_s :  std_logic;
-signal fifo_full_e : std_logic;
-signal fifo_full_w : std_logic;
-      
+signal fifo_empty_n_out : std_logic;
+signal fifo_empty_s_out : std_logic;
+signal fifo_empty_e_out : std_logic;
+signal fifo_empty_w_out : std_logic;
+signal fifo_empty_n_in : std_logic;
+signal fifo_empty_s_in : std_logic;
+signal fifo_empty_e_in : std_logic;
+signal fifo_empty_w_in : std_logic;
 
 begin
 
@@ -80,15 +79,14 @@ NANOPROC_1:SYSTEM_PROC port map
         data_out_s => data_out_s,
         data_out_e => data_out_e,
         data_out_w => data_out_w,
-        fifo_empty_n => fifo_empty_n,
-        fifo_empty_s => fifo_empty_s,
-        fifo_empty_e => fifo_empty_e,
-        fifo_empty_w => fifo_empty_w,
-        fifo_full_n => fifo_full_n,
-        fifo_full_s => fifo_full_s,
-        fifo_full_e => fifo_full_e,
-        fifo_full_w => fifo_full_w
-        
+        fifo_empty_n_out => fifo_empty_n_out,
+        fifo_empty_s_out => fifo_empty_s_out,
+        fifo_empty_e_out => fifo_empty_e_out,
+        fifo_empty_w_out => fifo_empty_w_out,
+        fifo_empty_n_in => fifo_empty_n_in,
+        fifo_empty_s_in => fifo_empty_s_in,
+        fifo_empty_e_in => fifo_empty_e_in,
+        fifo_empty_w_in => fifo_empty_w_in
 );
 
 

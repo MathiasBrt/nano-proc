@@ -19,6 +19,8 @@ entity PROC IS
                         send_out_s : out std_logic_vector(len_data_bus-1 downto 0);
                         send_out_e : out std_logic_vector(len_data_bus-1 downto 0);
                         send_out_w : out std_logic_vector(len_data_bus-1 downto 0);
+                        rcv_data : in std_logic_vector(len_data_bus-1 downto 0);
+                        rcv_interuption : in std_logic;
                         north_en : out std_logic;
                         south_en : out std_logic;
                         east_en : out std_logic;
@@ -294,15 +296,15 @@ BEGIN
         R_save_d(i)<=R_q(i); 		-- chargement des registres de sauvegarde
       end loop;
     end if;
-  end process demux_save_ctx;
+  end process save_ctx_p;
 
 -- Process combinatoire de recharge du contexte
   load_ctx_p : process (ctx_ctrl)
   begin
     if (ctx_ctrl='1') then
       for i in 0 to 7 loop
-        R_d(i)<=R_save_q;
-      end loop
+        R_d(i)<=R_save_q(i);
+      end loop;
     end if;
   end process load_ctx_p;
   

@@ -6,7 +6,7 @@ library lib_nanoproc;
 USE lib_nanoproc.NANO_PKG.all;
 
 entity STD_FIFO is
-  generic (fifo_depth);
+  generic (fifo_depth : integer);
   Port ( 
     CLK		: in  STD_LOGIC;
     resetn	: in  STD_LOGIC;
