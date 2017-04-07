@@ -20,7 +20,7 @@ entity PROC IS
                         send_out_e : out std_logic_vector(len_data_bus-1 downto 0);
                         send_out_w : out std_logic_vector(len_data_bus-1 downto 0);
                         rcv_data : in std_logic_vector(len_data_bus-1 downto 0);
-                        rcv_interuption : in std_logic;
+                        rcv_interuption_b : in std_logic;  -- actif bas
                         north_en : out std_logic;
                         south_en : out std_logic;
                         east_en : out std_logic;
@@ -29,6 +29,7 @@ end PROC;
 
 architecture behavior of PROC is
 
+  constant Interrupt_addr : std_logic_vector(len_data_bus-1 downto 0) := (others => '0');  -- Adresse du soft interruption dans la ROm
   component DEC3TO8
     port (  	w 	: in std_logic_vector(2 downto 0);
                 y 	: out std_logic_vector(0 to 7));
@@ -137,12 +138,14 @@ architecture behavior of PROC is
 -- codes de 0000 Ã  0111 : nanobus <= R_q() (PC = 0111,NumProc=0110)
 -- code 		1000				: nanobus <= din
 -- code 		1001				: nanobus <= Rg
--- code			autres			: nanobus <= 0
+-- code                 1100                            : nanobus <= Interrupt_addr
+-- code			autres			        : nanobus <= 0
 
-  constant MUX_off	 	: std_logic_vector(3 downto 0) := "1111";
-  constant MUX_din	 	: std_logic_vector(3 downto 0) := "1000";
+  constant MUX_off	        	: std_logic_vector(3 downto 0) := "1111";
+  constant MUX_din	        	: std_logic_vector(3 downto 0) := "1000";
   constant MUX_Rg		 	: std_logic_vector(3 downto 0) := "1001";
   constant MUX_PC		 	: std_logic_vector(3 downto 0) := "0111";
+  constant MUX_INTERUPT                 : std_logic_vector(3 downto 0) := "1100";
 
 BEGIN
 
@@ -266,6 +269,7 @@ BEGIN
       case mux_sel is
         when MUX_din => nanobus<=din;
         when MUX_Rg => nanobus<=Rg_q;
+        when MUX_INTERUPT => nanobus <= Interrupt_addr;
         when others => nanobus <= (others=>'0');
       end case;
     else										-- Si selection banc de registres
@@ -364,6 +368,7 @@ BEGIN
 -- 
 
   controlsignals: PROCESS (p_state, I, Ri_q, rx, ry,Rw_d,Z_bit,G_bit,alu_code)
+    variable interuption_en : std_logic := '1';  -- Autorisation de traitement des interuptions si une interuption n'est pas déjà en cours
   BEGIN
     
 -- pragma synthesis_off
@@ -397,6 +402,11 @@ BEGIN
         mux_sel<=MUX_PC; 	-- selection registre PC dans nanobus
         Rad_ld <= '1';		-- sortie PC pour instr fetch1
         incr_PC<='1';			-- incremente PC
+        if ((interuption_en  and (not rcv_interuption_b)) = '1') then
+          save_ctx <= '1';
+          mux_sel<=MUX_INTERUPT;
+          R_ld(7) <= '1';
+        end if;
         p_next_state <= fetch2;
         
       when fetch2 =>

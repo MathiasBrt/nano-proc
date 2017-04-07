@@ -10,94 +10,6 @@
 vsim lib_nanoproc_bench.bench_proc
 # vsim lib_nanoproc_bench.bench_proc 
 # ** Note: (vsim-3812) Design is being optimized...
-# ** Error: bench_system.vhd(92): (vopt-1270) Bad default binding for component instance "NANOPROC_1: SYSTEM_PROC".
-#  (Component port "fifo_full_w" is not on the entity.)
-# ** Warning: [1] bench_system.vhd(92): (vopt-3473) Component instance "/bench_proc/NANOPROC_1 : SYSTEM_PROC" is not bound.
-# Optimization failed
-# Error loading design
-vsim lib_nanoproc_bench.bench_proc
-# vsim lib_nanoproc_bench.bench_proc 
-# ** Note: (vsim-3812) Design is being optimized...
-# ** Warning: system_proc.vhd(171): (vopt-1251) Generic "fifo_depth" of entity "STD_FIFO" is not in the component being instantiated.
-# ** Warning: system_proc.vhd(182): (vopt-1251) Generic "fifo_depth" of entity "STD_FIFO" is not in the component being instantiated.
-# ** Warning: system_proc.vhd(193): (vopt-1251) Generic "fifo_depth" of entity "STD_FIFO" is not in the component being instantiated.
-# ** Warning: system_proc.vhd(204): (vopt-1251) Generic "fifo_depth" of entity "STD_FIFO" is not in the component being instantiated.
-# ** Warning: system_proc.vhd(215): (vopt-1251) Generic "fifo_depth" of entity "STD_FIFO" is not in the component being instantiated.
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.std_logic_arith(body)
-# Loading ieee.numeric_std(body)
-# Loading ieee.math_real(body)
-# Loading lib_nanoproc.nano_pkg
-# Loading work.bench_proc(a)#1
-# Loading ieee.std_logic_unsigned(body)
-# Loading lib_nanoproc.system_proc(a)#1
-# Loading lib_nanoproc.std_fifo(fifo)#1
-# ** Fatal: (vsim-3350) Generic "fifo_depth" has not been given a value.
-#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/FIFO_N File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/fifo.vhd Line: 9
-# FATAL ERROR while loading design
-# Error loading design
-vsim lib_nanoproc_bench.bench_proc
-# vsim lib_nanoproc_bench.bench_proc 
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.std_logic_arith(body)
-# Loading ieee.numeric_std(body)
-# Loading ieee.math_real(body)
-# Loading lib_nanoproc.nano_pkg
-# Loading work.bench_proc(a)#1
-# Loading ieee.std_logic_unsigned(body)
-# Loading lib_nanoproc.system_proc(a)#1
-# Loading lib_nanoproc.std_fifo(fifo)#1
-# ** Fatal: (vsim-3350) Generic "fifo_depth" has not been given a value.
-#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/FIFO_N File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/fifo.vhd Line: 9
-# FATAL ERROR while loading design
-# Error loading design
-vsim lib_nanoproc_bench.bench_proc
-# vsim lib_nanoproc_bench.bench_proc 
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.std_logic_arith(body)
-# Loading ieee.numeric_std(body)
-# Loading ieee.math_real(body)
-# Loading lib_nanoproc.nano_pkg
-# Loading work.bench_proc(a)#1
-# Loading ieee.std_logic_unsigned(body)
-# Loading lib_nanoproc.system_proc(a)#1
-# Loading lib_nanoproc.std_fifo(fifo)#1
-# ** Fatal: (vsim-3350) Generic "fifo_depth" has not been given a value.
-#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/FIFO_N File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/fifo.vhd Line: 9
-# FATAL ERROR while loading design
-# Error loading design
-vsim lib_nanoproc_bench.bench_proc
-# vsim lib_nanoproc_bench.bench_proc 
-# ** Note: (vsim-3812) Design is being optimized...
-# ** Warning: system_proc.vhd(171): (vopt-1251) Generic "fifo_depth" of entity "STD_FIFO" is not in the component being instantiated.
-# ** Warning: system_proc.vhd(182): (vopt-1251) Generic "fifo_depth" of entity "STD_FIFO" is not in the component being instantiated.
-# ** Warning: system_proc.vhd(193): (vopt-1251) Generic "fifo_depth" of entity "STD_FIFO" is not in the component being instantiated.
-# ** Warning: system_proc.vhd(204): (vopt-1251) Generic "fifo_depth" of entity "STD_FIFO" is not in the component being instantiated.
-# ** Warning: system_proc.vhd(215): (vopt-1251) Generic "fifo_depth" of entity "STD_FIFO" is not in the component being instantiated.
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading ieee.std_logic_arith(body)
-# Loading ieee.numeric_std(body)
-# Loading ieee.math_real(body)
-# Loading lib_nanoproc.nano_pkg
-# Loading work.bench_proc(a)#1
-# Loading ieee.std_logic_unsigned(body)
-# Loading lib_nanoproc.system_proc(a)#1
-# Loading lib_nanoproc.std_fifo(fifo)#1
-# ** Fatal: (vsim-3350) Generic "fifo_depth" has not been given a value.
-#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/FIFO_N File: /tp/xph2sei/xph2sei412/nano-proc/proc/vhd/fifo.vhd Line: 9
-# FATAL ERROR while loading design
-# Error loading design
-vsim lib_nanoproc_bench.bench_proc
-# vsim lib_nanoproc_bench.bench_proc 
-# ** Note: (vsim-3812) Design is being optimized...
 # Loading std.standard
 # Loading std.textio(body)
 # Loading ieee.std_logic_1164(body)
@@ -117,15 +29,311 @@ vsim lib_nanoproc_bench.bench_proc
 # ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_w has no driver.
 # This port will contribute value (U) to the signal network.
 add wave -position insertpoint  \
-sim:/bench_proc/NANOPROC_1/Clock
+sim:/bench_proc/NANOPROC_1/data_in_n \
+sim:/bench_proc/NANOPROC_1/s_data_in_n \
+sim:/bench_proc/NANOPROC_1/fifo_principale_write_en \
+sim:/bench_proc/NANOPROC_1/fifo_principale_read_en \
+sim:/bench_proc/NANOPROC_1/fifo_principale_empty \
+sim:/bench_proc/NANOPROC_1/fifo_principale_data_out \
+sim:/bench_proc/NANOPROC_1/s_rd_en_n
+restart
+run
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: NUMERIC_STD."/=": metavalue detected, returning TRUE
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
+restart
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_n has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_s has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_e has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_w has no driver.
+# This port will contribute value (U) to the signal network.
+run
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: NUMERIC_STD."/=": metavalue detected, returning TRUE
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
 add wave -position insertpoint  \
-sim:/bench_proc/NANOPROC_1/U1/R_save_q
+sim:/bench_proc/fifo_empty_n_in
+restart
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_n has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_s has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_e has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_w has no driver.
+# This port will contribute value (U) to the signal network.
+run
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: NUMERIC_STD."/=": metavalue detected, returning TRUE
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
 add wave -position insertpoint  \
-sim:/bench_proc/NANOPROC_1/U1/ctx_ctrl
+sim:/bench_proc/NANOPROC_1/bus_inter_fifo
+restart
+# ** Warning: (vsim-31) Unable to unlink file "/tp/xph2sei/xph2sei412/nano-proc/proc/lib/lib_nanoproc_bench/_opt__lock".
+# No such file or directory. (errno = ENOENT)
+# ** Note: (vsim-3812) Design is being optimized...
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.numeric_std(body)
+# Loading ieee.math_real(body)
+# Loading lib_nanoproc.nano_pkg
+# Loading work.bench_proc(a)#1
+# Loading ieee.std_logic_unsigned(body)
+# Loading lib_nanoproc.system_proc(a)#1
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_n has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_s has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_e has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_w has no driver.
+# This port will contribute value (U) to the signal network.
+run
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: NUMERIC_STD."/=": metavalue detected, returning TRUE
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
 add wave -position insertpoint  \
-sim:/bench_proc/NANOPROC_1/U1/I
+sim:/bench_proc/NANOPROC_1/s_rd_en_s
 add wave -position insertpoint  \
-sim:/bench_proc/NANOPROC_1/U1/p_state
+sim:/bench_proc/NANOPROC_1/s_rd_en_e
 add wave -position insertpoint  \
-sim:/bench_proc/NANOPROC_1/U1/R_q \
-sim:/bench_proc/NANOPROC_1/U1/R_d
+sim:/bench_proc/NANOPROC_1/s_rd_en_w
+restart
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_n has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_s has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_e has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_w has no driver.
+# This port will contribute value (U) to the signal network.
+run
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: NUMERIC_STD."/=": metavalue detected, returning TRUE
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
+restart
+# ** Warning: (vsim-31) Unable to unlink file "/tp/xph2sei/xph2sei412/nano-proc/proc/lib/lib_nanoproc_bench/_opt__lock".
+# No such file or directory. (errno = ENOENT)
+# ** Note: (vsim-3812) Design is being optimized...
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.numeric_std(body)
+# Loading ieee.math_real(body)
+# Loading lib_nanoproc.nano_pkg
+# Loading work.bench_proc(a)#1
+# Loading ieee.std_logic_unsigned(body)
+# Loading lib_nanoproc.system_proc(a)#1
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_n has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_s has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_e has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_w has no driver.
+# This port will contribute value (U) to the signal network.
+run
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: NUMERIC_STD."/=": metavalue detected, returning TRUE
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
+restart
+# ** Warning: (vsim-31) Unable to unlink file "/tp/xph2sei/xph2sei412/nano-proc/proc/lib/lib_nanoproc_bench/_opt__lock".
+# No such file or directory. (errno = ENOENT)
+# ** Note: (vsim-3812) Design is being optimized...
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.numeric_std(body)
+# Loading ieee.math_real(body)
+# Loading lib_nanoproc.nano_pkg
+# Loading work.bench_proc(a)#1
+# Loading ieee.std_logic_unsigned(body)
+# Loading lib_nanoproc.system_proc(a)#1
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_n has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_s has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_e has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_w has no driver.
+# This port will contribute value (U) to the signal network.
+run
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: NUMERIC_STD."/=": metavalue detected, returning TRUE
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
+add wave -position insertpoint  \
+sim:/bench_proc/NANOPROC_1/ctrl_priorite
+add wave -position insertpoint  \
+sim:/bench_proc/NANOPROC_1/maintien_priorite
+restart
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_n has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_s has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_e has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /bench_proc/NANOPROC_1/rd_en_w has no driver.
+# This port will contribute value (U) to the signal network.
+run
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U3
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U2
+# ** Warning: NUMERIC_STD."/=": metavalue detected, returning TRUE
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
+#    Time: 0 ns  Iteration: 0  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 1  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ns  Iteration: 2  Instance: /bench_proc/NANOPROC_1/U1

@@ -24,6 +24,10 @@ PORT ( 	Resetn, Clock 	: in std_logic;
         data_out_s : out std_logic_vector(len_data_bus-1 downto 0);
         data_out_e : out std_logic_vector(len_data_bus-1 downto 0);
         data_out_w : out std_logic_vector(len_data_bus-1 downto 0);
+        data_in_n : in std_logic_vector(len_data_bus-1 downto 0);
+        data_in_s : in std_logic_vector(len_data_bus-1 downto 0);
+        data_in_e : in std_logic_vector(len_data_bus-1 downto 0);
+        data_in_w : in std_logic_vector(len_data_bus-1 downto 0);
         fifo_empty_n_out : out std_logic;
         fifo_empty_s_out : out std_logic;
         fifo_empty_e_out : out std_logic;
@@ -55,7 +59,9 @@ port ( 	din 		: in std_logic_vector(len_data_bus-1 downto 0);
         send_out_e : out std_logic_vector(len_data_bus-1 downto 0);
         send_out_w : out std_logic_vector(len_data_bus-1 downto 0);
         rcv_data : in std_logic_vector(len_data_bus-1 downto 0);      -- Data sortant venant de la FIFO PRINCIPALe
-        rcv_interuption : in STD_LOGIC;                               -- Signal d'interuption venant de la sortie Empty de la FIFO PRINCIPALE
+        rcv_interuption_b : in STD_LOGIC;                               -- Signal d'interuption venant de la sortie Empty de la FIFO
+                                                                        -- PRINCIPALE
+                                                                        -- actif bas
         north_en : out std_logic;
         south_en : out std_logic;
         east_en : out std_logic;
@@ -116,6 +122,8 @@ signal    bus_inter_fifo : STD_LOGIC_VECTOR (len_data_bus-1 downto 0);
 Signal    fifo_principale_write_en, fifo_principale_read_en, fifo_principale_empty, fifo_principale_full : STD_LOGIC;
 signal    fifo_principale_data_out : STD_LOGIC_VECTOR (len_data_bus-1 downto 0);
 signal    s_rd_en_n, s_rd_en_s, s_rd_en_e, s_rd_en_w : std_logic;
+signal ctrl_priorite, maintien_priorite : STD_LOGIC_VECTOR(3 downto 0);  -- Signal qui détermine quelque fifo pourra écrire dans la fifo principale en première
+
 
 begin
 
@@ -135,7 +143,7 @@ U1:proc port map(
                east_en => s_wr_en_e,
                west_en => s_wr_en_w,
                rcv_data => fifo_principale_data_out,
-               rcv_interuption => fifo_principale_empty);
+               rcv_interuption_b => fifo_principale_empty);
 
 U2:ram 	generic map (len_addr_bus-2,len_data_bus) -- Adresses sur 6 bits
 	port map(
@@ -216,7 +224,6 @@ FIFO_PRINCIPALE : STD_FIFO generic map (40)
     Full    => fifo_principale_full);
 
 CONTROL_FIFO_PRINCIPALE : process (Clock, resetn)
-variable ctrl_priorite, maintien_priorite : STD_LOGIC_VECTOR(3 downto 0);  -- Signal qui détermine quelque fifo pourra écrire dans la fifo principale en première
                                                         -- "0001" = N; "0010" = S; "0100" = E; "1000" = W
 variable bit_etat : STD_LOGIC; -- 0 si la fifo envoie son premier mot, 1 sinon.
 begin
@@ -225,9 +232,9 @@ begin
     s_rd_en_s <= '0';
     s_rd_en_e <= '0';
     s_rd_en_w <= '0';
-    ctrl_priorite := "0000";
-    maintien_priorite := "0000";
-    bit_etat := '1';
+    ctrl_priorite <= "0001";
+    maintien_priorite <= "0001";
+    bit_etat := '0';
   end if;
 
   if (Clock='1' and Clock'event) then
@@ -248,10 +255,19 @@ begin
                  or (ctrl_priorite(0) and fifo_empty_n_in and fifo_empty_s_in and fifo_empty_e_in and (not fifo_empty_w_in))
                  or (ctrl_priorite(1) and fifo_empty_s_in and fifo_empty_e_in and (not fifo_empty_w_in))
                  or (ctrl_priorite(2) and fifo_empty_e_in and (not fifo_empty_w_in));
-      maintien_priorite(0) := s_rd_en_n;
-      maintien_priorite(1) := s_rd_en_s;
-      maintien_priorite(2) := s_rd_en_e;
-      maintien_priorite(3) := s_rd_en_w;
+      maintien_priorite(0) <= s_rd_en_n;
+      maintien_priorite(1) <= s_rd_en_s;
+      maintien_priorite(2) <= s_rd_en_e;
+      maintien_priorite(3) <= s_rd_en_w;
+      if (s_rd_en_n = '1') then
+        bus_inter_fifo <= data_in_n;
+      elsif (s_rd_en_s = '1') then
+        bus_inter_fifo <= data_in_s;
+      elsif (s_rd_en_e = '1') then
+        bus_inter_fifo <= data_in_e;
+      elsif (s_rd_en_w = '1') then
+        bus_inter_fifo <= data_in_w;
+      end if;
       bit_etat := s_rd_en_n or s_rd_en_s or s_rd_en_e or s_rd_en_w;
       fifo_principale_write_en <= s_rd_en_n or s_rd_en_s or s_rd_en_e or s_rd_en_w;
     else
@@ -259,7 +275,16 @@ begin
       s_rd_en_s <= maintien_priorite(1);
       s_rd_en_e <= maintien_priorite(2);
       s_rd_en_w <= maintien_priorite(3);
-      ctrl_priorite := maintien_priorite(2) & maintien_priorite(1) & maintien_priorite(0) & maintien_priorite(3); -- On donne la priorité à la fifo suivante pour le cycle d'après.
+      if (s_rd_en_n = '1') then
+        bus_inter_fifo <= data_in_n;
+      elsif (s_rd_en_s = '1') then
+        bus_inter_fifo <= data_in_s;
+      elsif (s_rd_en_e = '1') then
+        bus_inter_fifo <= data_in_e;
+      elsif (s_rd_en_w = '1') then
+        bus_inter_fifo <= data_in_w;
+      end if;
+      ctrl_priorite <= maintien_priorite(2) & maintien_priorite(1) & maintien_priorite(0) & maintien_priorite(3); -- On donne la priorité à la fifo suivante pour le cycle d'après.
       fifo_principale_write_en <= s_rd_en_n or s_rd_en_s or s_rd_en_e or s_rd_en_w;
       bit_etat := '0';
     end if;
