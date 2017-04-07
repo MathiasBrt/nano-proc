@@ -123,6 +123,7 @@ Signal    fifo_principale_write_en, fifo_principale_read_en, fifo_principale_emp
 signal    fifo_principale_data_out : STD_LOGIC_VECTOR (len_data_bus-1 downto 0);
 signal    s_rd_en_n, s_rd_en_s, s_rd_en_e, s_rd_en_w : std_logic;
 signal ctrl_priorite, maintien_priorite : STD_LOGIC_VECTOR(3 downto 0);  -- Signal qui détermine quelque fifo pourra écrire dans la fifo principale en première
+signal bit_etat : STD_LOGIC; -- 0 si la fifo envoie son premier mot, 1 sinon.
 
 
 begin
@@ -225,20 +226,20 @@ FIFO_PRINCIPALE : STD_FIFO generic map (40)
 
 CONTROL_FIFO_PRINCIPALE : process (Clock, resetn)
                                                         -- "0001" = N; "0010" = S; "0100" = E; "1000" = W
-variable bit_etat : STD_LOGIC; -- 0 si la fifo envoie son premier mot, 1 sinon.
+
 begin
-  if (resetn = '0') then 
-    s_rd_en_n <= '0';
-    s_rd_en_s <= '0';
-    s_rd_en_e <= '0';
-    s_rd_en_w <= '0';
-    ctrl_priorite <= "0001";
-    maintien_priorite <= "0001";
-    bit_etat := '0';
-  end if;
+ 
 
   if (Clock='1' and Clock'event) then
-    if (bit_etat='0') then
+     if (resetn = '0') then 
+       s_rd_en_n <= '0';
+       s_rd_en_s <= '0';
+       s_rd_en_e <= '0';
+       s_rd_en_w <= '0';
+       ctrl_priorite <= "0001";
+       maintien_priorite <= "0000";
+       bit_etat <= '0';
+     elsif (bit_etat='0') then
       s_rd_en_n <= (ctrl_priorite(0) and (not fifo_empty_n_in))
                  or (ctrl_priorite(1) and fifo_empty_s_in and fifo_empty_e_in and fifo_empty_w_in and (not fifo_empty_n_in))
                  or (ctrl_priorite(2) and fifo_empty_e_in and fifo_empty_w_in and (not fifo_empty_n_in))
@@ -248,9 +249,9 @@ begin
                  or (ctrl_priorite(3) and fifo_empty_w_in and fifo_empty_n_in and (not fifo_empty_s_in))
                  or (ctrl_priorite(0) and fifo_empty_n_in and (not fifo_empty_s_in));
       s_rd_en_e <= (ctrl_priorite(2) and (not fifo_empty_e_in))
-                 or (ctrl_priorite(3) and fifo_empty_s_in and fifo_empty_e_in and fifo_empty_w_in and (not fifo_empty_n_in))
+                 or (ctrl_priorite(3) and fifo_empty_s_in and fifo_empty_e_in and fifo_empty_w_in and (not fifo_empty_e_in))
                  or (ctrl_priorite(0) and fifo_empty_e_in and fifo_empty_w_in and (not fifo_empty_e_in))
-                 or (ctrl_priorite(1) and fifo_empty_w_in and (not fifo_empty_n_in));
+                 or (ctrl_priorite(1) and fifo_empty_w_in and (not fifo_empty_e_in));
       s_rd_en_w <= (ctrl_priorite(3) and (not fifo_empty_w_in))
                  or (ctrl_priorite(0) and fifo_empty_n_in and fifo_empty_s_in and fifo_empty_e_in and (not fifo_empty_w_in))
                  or (ctrl_priorite(1) and fifo_empty_s_in and fifo_empty_e_in and (not fifo_empty_w_in))
@@ -268,7 +269,7 @@ begin
       elsif (s_rd_en_w = '1') then
         bus_inter_fifo <= data_in_w;
       end if;
-      bit_etat := s_rd_en_n or s_rd_en_s or s_rd_en_e or s_rd_en_w;
+      bit_etat <= s_rd_en_n or s_rd_en_s or s_rd_en_e or s_rd_en_w;
       fifo_principale_write_en <= s_rd_en_n or s_rd_en_s or s_rd_en_e or s_rd_en_w;
     else
       s_rd_en_n <= maintien_priorite(0); -- On garde l'ordre du cycle précédent pour envoyer le deuxième mot de la même fifo.
@@ -286,7 +287,7 @@ begin
       end if;
       ctrl_priorite <= maintien_priorite(2) & maintien_priorite(1) & maintien_priorite(0) & maintien_priorite(3); -- On donne la priorité à la fifo suivante pour le cycle d'après.
       fifo_principale_write_en <= s_rd_en_n or s_rd_en_s or s_rd_en_e or s_rd_en_w;
-      bit_etat := '0';
+      bit_etat <= '0';
     end if;
   end if;
 end process;

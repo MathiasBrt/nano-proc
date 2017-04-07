@@ -109,8 +109,11 @@ Clock <= not(Clock) after CLOCK_PERIOD/2;
 resetn <=	'0',
 		'1' after 20 ns ;
 
-data_in_n <= x"ABCD" after 60 ns, x"FFFF" after 80 ns, x"0000" after 100 ns;
-fifo_empty_n_in <= '0' after 40 ns, '1' after 80 ns;
+data_in_n <= x"ABCD" after 270 ns, x"FFFF" after 290 ns, x"0000" after 310 ns;
+fifo_empty_n_in <= '1' after 30 ns, '0' after 250 ns, '1' after 290 ns;
+fifo_empty_s_in <= '1' after 30 ns;
+fifo_empty_e_in <= '1' after 30 ns;
+fifo_empty_w_in <= '1' after 30 ns;
 
 -- controle du read enable
 --rd_en_n <= '0', '1' after 410 ns, '0' after 450 ns;
