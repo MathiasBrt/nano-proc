@@ -39,7 +39,7 @@ architecture behavior of PROC is
   end component;
 
   type STATE is (fetch1,fetch2,exe_1,exe_2,exe_3,exe_4); 		-- Etats du processeur
-  type INST is array (0 to 15) of string(1 to 4);			-- liste jeu instructions
+  type INST is array (0 to 17) of string(1 to 4);			-- liste jeu instructions
 
 
   signal p_state,p_next_state : STATE;
@@ -67,11 +67,13 @@ architecture behavior of PROC is
   signal Rc_n_q,Rc_s_q,Rc_e_q,Rc_w_q : std_logic; --signal de sortie de la double
                                                   --bascule 1bit du send
   signal north_en_sig,south_en_sig,east_en_sig,west_en_sig: std_logic; -- signal de contrÃ´le
-                                                       -- d'Ã©criture sur la fifo
-
-
+                                                                       -- d'Ã©criture sur la fifo
+  
+-- signaux et registres de changement de contexte
+  signal R_save_q,R_save_d : REGISTER_FILE(0 to 7);
+  signal ctx_ctrl : std_logic;
 -- sorties registres									
-  signal R_q,R_d 		: REGISTER_FILE(0 to 7); 
+  signal R_q,R_d 		: REGISTER_FILE(0 to 7);
   signal Ra_q,Ra_d	: std_logic_vector(len_data_bus-1 downto 0);
   signal Rg_q,Rg_d	: std_logic_vector(len_data_bus-1 downto 0);
   signal dmux_out_bus   : std_logic_vector(len_data_bus-1 downto 0); --sortie
@@ -123,8 +125,10 @@ architecture behavior of PROC is
   constant i_brmi	 	: std_logic_vector(4 downto 0) := "01101";
   constant i_rcv 	: std_logic_vector( 4 downto 0 ) := "01111";
   constant i_send 	: std_logic_vector( 4 downto 0 ) := "10000";
-
-  constant i_name	: INST := ("mv  ","ldi ","add ","sub ","ld  ","st  ","mvnz","mvgt","and ","bra ","brnz","brgt","brz ","brmi","rcv ","send");
+  constant i_sctx       : std_logic_vector( 4 downto 0 ) := "10001";
+  constant i_lctx       : std_logic_vector( 4 downto 0 ) := "10010";
+  
+  constant i_name	: INST := ("mv  ","ldi ","add ","sub ","ld  ","st  ","mvnz","mvgt","and ","bra ","brnz","brgt","brz ","brmi","rcv ","send","sctx","lctx");
 
 -- Table de constantes pour le multiplexeur
 -- codes de 0000 Ã  0111 : nanobus <= R_q() (PC = 0111,NumProc=0110)
@@ -282,6 +286,26 @@ BEGIN
     end if;
   end process demux_p;
 
+-- Process combinatoire de sauvegarde du contexte
+  save_ctx_p : process (R_q, ctx_ctrl)
+  begin
+    if (ctx_ctrl='1') then
+      for i in 0 to 7 loop
+        R_save_d(i)<=R_q(i); 		-- chargement des registres de sauvegarde
+      end loop;
+    end if;
+  end process demux_save_ctx;
+
+-- Process combinatoire de recharge du contexte
+  load_ctx_p : process (ctx_ctrl)
+  begin
+    if (ctx_ctrl='1') then
+      for i in 0 to 7 loop
+        R_d(i)<=R_save_q;
+      end loop
+    end if;
+  end process load_ctx_p;
+  
 -- Process combinatoire qui calcule la direction d'envoi
   logique_direction_envoi : process (dmux_out_logic)
   begin
@@ -347,12 +371,8 @@ BEGIN
     offset_PC(5 downto 0) <= rx & ry;			-- 6 bits de l'offset PC pour branch
     Rad_ld <='0';
     Rd_ld <='0';
-    --Rd_n_ld<='0';
-    --Rd_s_ld<='0';
-    --Rd_e_ld<='0';
-    --Rd_w_ld<='0';
     sig_send<='0';
-    
+    ctx_ctrl<='0';    
     -- Machine a etats :
 
     CASE p_state is
@@ -424,6 +444,12 @@ BEGIN
           when i_send =>
             mux_sel<="0110"; --sÃ©lectionne le registre Numproc
             Ra_ld<='1';
+          when i_sctx =>
+            ctx_ctrl<='1';
+            p_next_state <= fetch1;
+          when i_lctx =>
+            ctx_ctrl<='1';
+            p_next_state <= fetch1;
           when others =>
         end case;
 	
