@@ -20,56 +20,64 @@ constant CLOCK_PERIOD : time := 20 ns;
 component SYSTEM_PROC 
 port
 (
- 	Resetn, Clock 	: in std_logic;
+ Resetn, Clock 	: in std_logic;
 	io_inp 		: in std_logic_vector(31 downto 0);
-        rd_en_n : out std_logic;
-        rd_en_s : out std_logic;
-        rd_en_e : out std_logic;
-        rd_en_w : out std_logic;
+        rd_en_n_rcv : out std_logic;
+        rd_en_s_rcv : out std_logic;
+        rd_en_e_rcv : out std_logic;
+        rd_en_w_rcv : out std_logic;
+        rd_en_n_send : in std_logic;
+        rd_en_s_send : in std_logic;
+        rd_en_e_send : in std_logic;
+        rd_en_w_send : in std_logic;
 	io_out 		: out std_logic_vector(31 downto 0);
-        data_out_n : out std_logic_vector(len_data_bus-1 downto 0);
-        data_out_s : out std_logic_vector(len_data_bus-1 downto 0);
-        data_out_e : out std_logic_vector(len_data_bus-1 downto 0);
-        data_out_w : out std_logic_vector(len_data_bus-1 downto 0);
-        data_in_n : in std_logic_vector(len_data_bus-1 downto 0);
-        data_in_s : in std_logic_vector(len_data_bus-1 downto 0);
-        data_in_e : in std_logic_vector(len_data_bus-1 downto 0);
-        data_in_w : in std_logic_vector(len_data_bus-1 downto 0);
-        fifo_empty_n_out : out std_logic;
-        fifo_empty_s_out : out std_logic;
-        fifo_empty_e_out : out std_logic;
-        fifo_empty_w_out : out std_logic;
-        fifo_empty_n_in : in std_logic;
-        fifo_empty_s_in : in std_logic;
-        fifo_empty_e_in : in std_logic;
-        fifo_empty_w_in : in std_logic
+        data_n_send : out std_logic_vector(len_data_bus-1 downto 0);
+        data_s_send : out std_logic_vector(len_data_bus-1 downto 0);
+        data_e_send : out std_logic_vector(len_data_bus-1 downto 0);
+        data_w_send : out std_logic_vector(len_data_bus-1 downto 0);
+        data_n_rcv : in std_logic_vector(len_data_bus-1 downto 0);
+        data_s_rcv : in std_logic_vector(len_data_bus-1 downto 0);
+        data_e_rcv : in std_logic_vector(len_data_bus-1 downto 0);
+        data_w_rcv : in std_logic_vector(len_data_bus-1 downto 0);
+        fifo_empty_n_send : out std_logic;
+        fifo_empty_s_send : out std_logic;
+        fifo_empty_e_send : out std_logic;
+        fifo_empty_w_send : out std_logic;
+        fifo_empty_n_rcv : in std_logic;
+        fifo_empty_s_rcv : in std_logic;
+        fifo_empty_e_rcv : in std_logic;
+        fifo_empty_w_rcv : in std_logic
       );
 end component;
 
 -- signaux d'interface du systeme
 signal Resetn, Clock 	: std_logic:='0';
 signal io_inp 		: std_logic_vector(31 downto 0);
-signal rd_en_n : std_logic;
-signal rd_en_s : std_logic;
-signal rd_en_e : std_logic;
-signal rd_en_w : std_logic;
+signal rd_en_n_rcv : std_logic;
+signal rd_en_s_rcv : std_logic;
+signal rd_en_e_rcv : std_logic;
+signal rd_en_w_rcv : std_logic;
+signal rd_en_n_send : std_logic;
+signal rd_en_s_send : std_logic;
+signal rd_en_e_send : std_logic;
+signal rd_en_w_send : std_logic;
 signal io_out 		: std_logic_vector(31 downto 0);
-signal data_out_n :  std_logic_vector(len_data_bus-1 downto 0);
-signal data_out_s : std_logic_vector(len_data_bus-1 downto 0);
-signal data_out_e : std_logic_vector(len_data_bus-1 downto 0);
-signal data_out_w : std_logic_vector(len_data_bus-1 downto 0);
-signal data_in_n :  std_logic_vector(len_data_bus-1 downto 0);
-signal data_in_s : std_logic_vector(len_data_bus-1 downto 0);
-signal data_in_e : std_logic_vector(len_data_bus-1 downto 0);
-signal data_in_w : std_logic_vector(len_data_bus-1 downto 0);
-signal fifo_empty_n_out : std_logic;
-signal fifo_empty_s_out : std_logic;
-signal fifo_empty_e_out : std_logic;
-signal fifo_empty_w_out : std_logic;
-signal fifo_empty_n_in : std_logic;
-signal fifo_empty_s_in : std_logic;
-signal fifo_empty_e_in : std_logic;
-signal fifo_empty_w_in : std_logic;
+signal data_n_send :  std_logic_vector(len_data_bus-1 downto 0);
+signal data_s_send : std_logic_vector(len_data_bus-1 downto 0);
+signal data_e_send : std_logic_vector(len_data_bus-1 downto 0);
+signal data_w_send : std_logic_vector(len_data_bus-1 downto 0);
+signal data_n_rcv :  std_logic_vector(len_data_bus-1 downto 0);
+signal data_s_rcv : std_logic_vector(len_data_bus-1 downto 0);
+signal data_e_rcv : std_logic_vector(len_data_bus-1 downto 0);
+signal data_w_rcv : std_logic_vector(len_data_bus-1 downto 0);
+signal fifo_empty_n_send: std_logic;
+signal fifo_empty_s_send: std_logic;
+signal fifo_empty_e_send : std_logic;
+signal fifo_empty_w_send: std_logic;
+signal fifo_empty_n_rcv: std_logic;
+signal fifo_empty_s_rcv: std_logic;
+signal fifo_empty_e_rcv: std_logic;
+signal fifo_empty_w_rcv: std_logic;
 
 begin
 
@@ -78,27 +86,31 @@ NANOPROC_1:SYSTEM_PROC port map
         Resetn => Resetn, 
  	Clock => Clock,
         io_inp => io_inp,
-        rd_en_n => rd_en_n,
-        rd_en_s => rd_en_s,
-        rd_en_e => rd_en_e,
-        rd_en_w => rd_en_w,
+        rd_en_n_rcv => rd_en_n_rcv,
+        rd_en_s_rcv => rd_en_s_rcv,
+        rd_en_e_rcv => rd_en_e_rcv,
+        rd_en_w_rcv => rd_en_w_rcv,
+        rd_en_n_send => rd_en_n_send,
+        rd_en_s_send => rd_en_s_send,
+        rd_en_e_send => rd_en_e_send,
+        rd_en_w_send => rd_en_w_send,
         io_out => io_out,
-        data_out_n => data_out_n,
-        data_out_s => data_out_s,
-        data_out_e => data_out_e,
-        data_out_w => data_out_w,
-        data_in_n => data_in_n,
-        data_in_s => data_in_s,
-        data_in_e => data_in_e,
-        data_in_w => data_in_w,
-        fifo_empty_n_out => fifo_empty_n_out,
-        fifo_empty_s_out => fifo_empty_s_out,
-        fifo_empty_e_out => fifo_empty_e_out,
-        fifo_empty_w_out => fifo_empty_w_out,
-        fifo_empty_n_in => fifo_empty_n_in,
-        fifo_empty_s_in => fifo_empty_s_in,
-        fifo_empty_e_in => fifo_empty_e_in,
-        fifo_empty_w_in => fifo_empty_w_in
+        data_n_send => data_n_send,
+        data_s_send => data_s_send,
+        data_e_send => data_e_send,
+        data_w_send => data_w_send,
+        data_n_rcv => data_n_rcv,
+        data_s_rcv => data_s_rcv,
+        data_e_rcv => data_e_rcv,
+        data_w_rcv => data_w_rcv,
+        fifo_empty_n_send => fifo_empty_n_send,
+        fifo_empty_s_send => fifo_empty_s_send,
+        fifo_empty_e_send => fifo_empty_e_send,
+        fifo_empty_w_send => fifo_empty_w_send,
+        fifo_empty_n_rcv => fifo_empty_n_rcv,
+        fifo_empty_s_rcv => fifo_empty_s_rcv,
+        fifo_empty_e_rcv => fifo_empty_e_rcv,
+        fifo_empty_w_rcv => fifo_empty_w_rcv
 );
 
 
@@ -107,13 +119,13 @@ Clock <= not(Clock) after CLOCK_PERIOD/2;
 
 -- generation du reset
 resetn <=	'0',
-		'1' after 20 ns ;
+		'1' after 10 ns ;
 
-data_in_n <= x"ABCD" after 270 ns, x"FFFF" after 290 ns, x"0000" after 310 ns;
-fifo_empty_n_in <= '1' after 30 ns, '0' after 250 ns, '1' after 290 ns;
-fifo_empty_s_in <= '1' after 30 ns;
-fifo_empty_e_in <= '1' after 30 ns;
-fifo_empty_w_in <= '1' after 30 ns;
+data_n_rcv <= x"ABCD" after 50 ns, x"FFFF" after 70 ns, x"0000" after 90 ns;
+fifo_empty_n_rcv<= '1' after 10 ns, '0' after 30 ns, '1' after 90 ns;
+fifo_empty_s_rcv<= '1' after 10 ns;
+fifo_empty_e_rcv<= '1' after 10 ns;
+fifo_empty_w_rcv<= '1' after 10 ns;
 
 -- controle du read enable
 --rd_en_n <= '0', '1' after 410 ns, '0' after 450 ns;

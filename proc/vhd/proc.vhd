@@ -20,7 +20,8 @@ entity PROC IS
                         send_out_e : out std_logic_vector(len_data_bus-1 downto 0);
                         send_out_w : out std_logic_vector(len_data_bus-1 downto 0);
                         rcv_data : in std_logic_vector(len_data_bus-1 downto 0);
-                        rcv_interuption_b : in std_logic;  -- actif bas
+                        rcv_interruption_b : in std_logic;  -- actif bas
+                        rcv_en_fifo_principale : out std_logic;
                         north_en : out std_logic;
                         south_en : out std_logic;
                         east_en : out std_logic;
@@ -63,6 +64,7 @@ architecture behavior of PROC is
   signal Rd_n_ld,Rd_s_ld,Rd_e_ld,Rd_w_ld : std_logic; --signal de ctrl des
                                                       --bascules 16bits d'envoi
                                                       --vers la fifo
+  signal fifo_principale_rd_en : std_logic;  -- Signal de controle de lecture de la fifo principale
   signal Rc_n_d,Rc_s_d,Rc_e_d,Rc_w_d : std_logic; --signal d'entrÃ©e de la double
                                                   --bascule 1bit du send
   signal Rc_n_i,Rc_s_i,Rc_e_i,Rc_w_i : std_logic; --signal intermÃ©diaire de la double
@@ -139,13 +141,15 @@ architecture behavior of PROC is
 -- code 		1000				: nanobus <= din
 -- code 		1001				: nanobus <= Rg
 -- code                 1100                            : nanobus <= Interrupt_addr
+-- code                 1010                            : nanobus <= rcv_data
 -- code			autres			        : nanobus <= 0
 
   constant MUX_off	        	: std_logic_vector(3 downto 0) := "1111";
   constant MUX_din	        	: std_logic_vector(3 downto 0) := "1000";
   constant MUX_Rg		 	: std_logic_vector(3 downto 0) := "1001";
   constant MUX_PC		 	: std_logic_vector(3 downto 0) := "0111";
-  constant MUX_INTERUPT                 : std_logic_vector(3 downto 0) := "1100";
+  constant MUX_INTERRUPT                : std_logic_vector(3 downto 0) := "1100";
+  constant MUX_RCV                      : std_logic_vector(3 downto 0) := "1010";
 
 BEGIN
 
@@ -269,7 +273,8 @@ BEGIN
       case mux_sel is
         when MUX_din => nanobus<=din;
         when MUX_Rg => nanobus<=Rg_q;
-        when MUX_INTERUPT => nanobus <= Interrupt_addr;
+        when MUX_INTERRUPT => nanobus <= Interrupt_addr;
+        when MUX_RCV => nanobus <= rcv_data;
         when others => nanobus <= (others=>'0');
       end case;
     else										-- Si selection banc de registres
@@ -368,7 +373,7 @@ BEGIN
 -- 
 
   controlsignals: PROCESS (p_state, I, Ri_q, rx, ry,Rw_d,Z_bit,G_bit,alu_code)
-    variable interuption_en : std_logic := '1';  -- Autorisation de traitement des interuptions si une interuption n'est pas déjà en cours
+    variable interruption_en : std_logic := '1';  -- Autorisation de traitement des interruptions si une interruption n'est pas déjà en cours
   BEGIN
     
 -- pragma synthesis_off
@@ -402,9 +407,9 @@ BEGIN
         mux_sel<=MUX_PC; 	-- selection registre PC dans nanobus
         Rad_ld <= '1';		-- sortie PC pour instr fetch1
         incr_PC<='1';			-- incremente PC
-        if ((interuption_en  and (not rcv_interuption_b)) = '1') then
+        if ((interruption_en  and (not rcv_interruption_b)) = '1') then
           save_ctx <= '1';
-          mux_sel<=MUX_INTERUPT;
+          mux_sel<=MUX_INTERRUPT;
           R_ld(7) <= '1';
         end if;
         p_next_state <= fetch2;
@@ -478,6 +483,11 @@ BEGIN
             load_ctx<='1';
             R_ld<=(others=>'1');
             p_next_state <= fetch1;
+          when i_rcv =>
+            fifo_principale_rd_en <= '1';
+            mux_sel <= MUX_RCV;
+            R_ld <= Xreg;
+            p_next_state <= exe_2;
           when others =>
         end case;
 	
@@ -513,6 +523,11 @@ BEGIN
             Rg_ld<='1';
             alu_code<=alu_sub;
             p_next_state<=exe_3;
+          when i_rcv =>
+            fifo_principale_rd_en <= '1';
+            mux_sel <= MUX_RCV;
+            R_ld <= Yreg;
+            p_next_state <= fetch1;
           when others =>
         end case;
         
@@ -541,5 +556,5 @@ BEGIN
     end case;
     
   END PROCESS;
-
+  rcv_en_fifo_principale <= fifo_principale_rd_en;
 END Behavior;
