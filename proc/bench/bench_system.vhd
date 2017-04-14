@@ -121,7 +121,7 @@ Clock <= not(Clock) after CLOCK_PERIOD/2;
 resetn <=	'0',
 		'1' after 30 ns ;
 
-data_n_rcv <= x"ABCD" after 90 ns, x"FFFF" after 110 ns, x"0000" after 130 ns;
+data_n_rcv <= x"000E" after 90 ns, x"FFFF" after 110 ns, x"0000" after 130 ns;
 fifo_empty_n_rcv<= '1' after 30 ns, '0' after 70 ns, '1' after 130 ns;
 fifo_empty_s_rcv<= '1' after 30 ns;
 fifo_empty_e_rcv<= '1' after 30 ns;

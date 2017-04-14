@@ -40,10 +40,10 @@ constant MY_ROM : tab_rom :=
 
   10 => "0000000001110000",             -- ldi r6,#0000 : Numéro du processeur source (0000)
   11 => x"000E", 
---  12 => "0000000001001000",             -- ldi r1,#0001 : Numéro du proc destination (0001)
---  13 => x"000A",
-  12 => "0000000000101110",             -- ldi r1,#0001 : Numéro du proc destination (0001)
-  13 => "0000000000100110",
+  12 => "0000000001001000",             -- ldi r1,#0001 : Numéro du proc destination (0001)
+  13 => x"000A",
+--  12 => "0000000000101110",             -- ldi r1,#0001 : Numéro du proc destination (0001)
+--  13 => "0000000000100110",
   14 => "0000000001000000",             -- ldi r0, # ABCD : Donnée à envoyer (1010 1011
                                         -- 1100 1101)
   15 => x"ABCD", 

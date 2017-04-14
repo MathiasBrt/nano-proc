@@ -443,38 +443,21 @@ BEGIN
       
       when fetch2 =>
         if (interruption_en_current  = '1') then
-          if rcv_interruption_b = '0' then
-            interruption_en_next <= '1';
-            p_next_state <= int_state;
-          else
-            Ri_ld <= '1';			-- store din in Ri
-            interruption_en_next <= '1';
-            p_next_state <= exe_1;
-          end if;
+          interruption_en_next <= '1';
         else
-          Ri_ld <= '1';			-- store din in Ri
           interruption_en_next <= '0';
-          p_next_state <= exe_1;
         end if;
+            Ri_ld <= '1';			-- store din in Ri
+            p_next_state <= exe_1;
         
       when exe_1 =>
         if (interruption_en_current = '1') then
-          if rcv_interruption_b = '0' then
-            case I is
-              when i_ldi =>
-                mux_sel<=MUX_PC;        -- selection registre PC dans nanobus
-                Rad_ld<='1'; 		-- selection nanobus dans address ROM
-                incr_PC<='1';
-		p_next_state <= exe_2;  -- avance PC pour data imm
-                interruption_en_next <= '1';
-              when others =>
-                interruption_en_next <= '1';
-                p_next_state <= int_state;
-            end case;
-          else
+          interruption_en_next <= '1';
+        else
+          interruption_en_next <= '0';
+        end if;
             mux_sel<='0'& ry; 	-- Ry dans nanobus
             p_next_state <= exe_2;
-            interruption_en_next <= '1';
             case I is
               when i_mv =>
                 R_ld <= Xreg; 		-- selection registre destination
@@ -539,104 +522,18 @@ BEGIN
                 p_next_state <= fetch1;
               when i_rcv =>
                 fifo_principale_rd_en <= '1';
-              --mux_sel <= MUX_RCV;
-              --R_ld <= Xreg;
                 p_next_state <= exe_2;
               when others =>
             end case;
-          end if;
-        else
-          mux_sel<='0'& ry; 	-- Ry dans nanobus
-          p_next_state <= exe_2;
-          interruption_en_next <= '0';
-          case I is
-            when i_mv =>
-              R_ld<=Xreg; 		-- selection registre destination
-              p_next_state <= fetch1;	-- fini
-            when i_mvnz =>
-              if (Z_bit='0') then
-                R_ld<=Xreg; 	-- selection registre destination
-              end if;
-              p_next_state <= fetch1;
-            when i_mvgt =>
-              if (G_bit='0') then
-                R_ld<=Xreg; 	-- selection registre destination
-              end if;
-              p_next_state <= fetch1;
-            when i_ldi => 
-              mux_sel<=MUX_PC; -- selection registre PC dans nanobus
-              Rad_ld<='1'; 		-- selection nanobus dans address ROM
-              incr_PC<='1';		-- avance PC pour data imm
-            when i_add =>
-              Ra_ld<='1';		-- ecriture dans accu A
-            when i_sub =>
-              Ra_ld<='1';		-- ecriture dans accu A
-            when i_and =>
-              Ra_ld<='1';		-- ecriture dans accu A
-            when i_ld =>
-              Rad_ld<='1';	-- ecriture dans adresse pour memoire externe
-            when i_st =>
-              Rad_ld<='1';	-- ecriture dans adresse pour memoire externe
-            when i_bra =>
-              br_pc<='1';		-- valide calcul PC + offset_PC
-              p_next_state <= fetch1;
-            when i_brnz =>
-              if (Z_bit='0') then
-                br_pc<='1';		-- valide calcul PC + offset_PC
-              end if;
-              p_next_state <= fetch1;
-            when i_brgt =>
-              if (G_bit='0') then
-                br_pc<='1';		-- valide calcul PC + offset_PC
-              end if;
-              p_next_state <= fetch1;
-            when i_brz =>
-              if (Z_bit='1') then
-                br_pc<='1';		-- valide calcul PC + offset_PC
-              end if;
-              p_next_state <= fetch1;
-            when i_brmi =>
-              if (G_bit='1') then -- N=1 pour branch minus
-                br_pc<='1';		-- valide calcul PC + offset_PC
-              end if;
-              p_next_state <= fetch1;
-            when i_send =>
-              mux_sel<="0110"; --sÃ©lectionne le registre Numproc
-              Ra_ld<='1';
-            when i_sctx =>
-              save_ctx<='1';
-              p_next_state <= fetch1;
-            when i_lctx =>
-              load_ctx<='1';
-              R_ld<=(others=>'1');
-              interruption_en_next <= '1';
-              p_next_state <= fetch1;
-            when i_rcv =>
-              fifo_principale_rd_en <= '1';
-            --mux_sel <= MUX_RCV;
-            --R_ld <= Xreg;
-              p_next_state <= exe_2;
-            when others =>
-          end case;
-        end if;
           
 	
       when exe_2 =>
         if (interruption_en_current = '1') then
-          if rcv_interruption_b = '0' then
-            case I is
-              when i_ldi =>
-                R_ld<=Xreg; 		-- selection registre destination
-                mux_sel<=MUX_din; 	-- selection data DIN source
-                p_next_state <= fetch1;
-                interruption_en_next <= '1';
-              when others =>
-                interruption_en_next <= '1';
-                p_next_state <= int_state;
-            end case;
-          else
+          interruption_en_next <= '1';
+        else
+          interruption_en_next <= '0';
+        end if;
             p_next_state <= fetch1;
-            interruption_en_next <= '1';
             case I is
               when i_ldi =>
                 R_ld<=Xreg; 		-- selection registre destination
@@ -674,57 +571,14 @@ BEGIN
                 p_next_state <= exe_3;
               when others =>
             end case;
-          end if;
-        else
-          p_next_state <= fetch1;
-          interruption_en_next <= '0';
-          case I is
-            when i_ldi =>
-              R_ld<=Xreg; 		-- selection registre destination
-              mux_sel<=MUX_din; 	-- selection data DIN source
-            when i_add =>
-              mux_sel<='0' & rx; 	-- selection registre X
-              Rg_ld<='1';			-- ecriture dans REG G
-              p_next_state <= exe_3;
-            when i_sub =>
-              mux_sel<='0' & rx; 	-- selection registre X
-              Rg_ld<='1';		-- ecriture Rx-A dans REG G
-              alu_code<=alu_sub;	-- selection soustraction
-              p_next_state <= exe_3;
-            when i_ld =>
-              R_ld<=Xreg; 		-- selection registre destination
-              mux_sel<=MUX_din; 	-- selection data DIN source
-            when i_st =>
-              mux_sel<='0' & rx; 	-- selection registre adresse source
-              Rd_ld<='1';		-- ecriture dans REG data bus
-              Rw_d <='1';		-- ecriture
-            when i_and =>
-              mux_sel<='0' & rx; 	-- selection registre X
-              Rg_ld<='1';		-- ecriture Rx-A dans REG G
-              alu_code<=alu_and;	-- selection and
-              p_next_state <= exe_3;
-            when i_send =>
-              mux_sel<='0' & rx;  -- registre x contenant la destination dans nanobus
-              Rg_ld<='1';
-              alu_code<=alu_sub;
-              p_next_state<=exe_3;
-            when i_rcv =>
-              fifo_principale_rd_en <= '1';
-              mux_sel <= MUX_RCV;
-              R_ld <= Xreg;
-              p_next_state <= exe_3;
-            when others =>
-          end case;
-        end if;
-         
+        
       when exe_3 =>
         if (interruption_en_current = '1') then
-          if rcv_interruption_b = '0' then
-            interruption_en_next <= '1';
-            p_next_state <= int_state;
-          else
+          interruption_en_next <= '1';
+        else
+          interruption_en_next <= '0';
+        end if;
             p_next_state <= fetch1;
-            interruption_en_next <= '1';
             mux_sel<=MUX_Rg;			-- resultat Rg
             R_ld<=Xreg; 			-- selection registre destination       Rx
             case I is
@@ -738,31 +592,13 @@ BEGIN
                 p_next_state <= fetch1;
               when others =>            
             end case;
-          end if;
-        else
-          p_next_state <= fetch1;
-          interruption_en_next <= '0';
-          mux_sel<=MUX_Rg;			-- resultat Rg
-          R_ld<=Xreg; 			-- selection registre destination       Rx
-        case I is
-          when i_send =>
-            sig_send<='1'; --ContrÃ´le des mux et du demux
-            mux_sel<='0' & rx; --ecriture de la destination dans nanobus
-            p_next_state <= exe_4;
-          when i_rcv =>
-            mux_sel <= MUX_RCV;
-            R_ld <= Yreg;
-            p_next_state <= fetch1;
-          when others =>            
-        end case;
-        end if;
-        
+ 
       when exe_4 =>
         if (interruption_en_current = '1') then
-          if rcv_interruption_b = '0' then
-            interruption_en_next <= '1';
-            p_next_state <= int_state;
-          else
+          interruption_en_next <= '1';
+        else
+          interruption_en_next <= '0';
+        end if;
             p_next_state <= fetch1;
             case I is
               when i_send =>
@@ -772,20 +608,6 @@ BEGIN
                 --calcul de direction
               when others =>
             end case;
-          end if;
-        else
-          p_next_state <= fetch1;
-          case I is
-            when i_send =>
-              mux_sel<='0' & ry; --ecriture de la data dans nanobus
-                                       --le contrÃ´le de la bascule 16bits
-                                       --d'envoi est fait par la logique de
-                                       --calcul de direction
-            when others =>
-          end case;
-        end if;
-
-            
     end case;
     
   END PROCESS;
