@@ -368,6 +368,10 @@ begin  -- process
         next_state <= attente;
   end case;
 end process;
+rd_en_n_rcv<=s_rd_en_n_rcv;
+rd_en_s_rcv<=s_rd_en_s_rcv;
+rd_en_e_rcv<=s_rd_en_e_rcv;
+rd_en_w_rcv<=s_rd_en_w_rcv;
 
 process (sys_add_bus,wr,data_rom,data_ram,data_port)
 begin

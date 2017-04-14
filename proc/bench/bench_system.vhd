@@ -119,13 +119,13 @@ Clock <= not(Clock) after CLOCK_PERIOD/2;
 
 -- generation du reset
 resetn <=	'0',
-		'1' after 10 ns ;
+		'1' after 30 ns ;
 
-data_n_rcv <= x"ABCD" after 50 ns, x"FFFF" after 70 ns, x"0000" after 90 ns;
-fifo_empty_n_rcv<= '1' after 10 ns, '0' after 30 ns, '1' after 90 ns;
-fifo_empty_s_rcv<= '1' after 10 ns;
-fifo_empty_e_rcv<= '1' after 10 ns;
-fifo_empty_w_rcv<= '1' after 10 ns;
+data_n_rcv <= x"ABCD" after 90 ns, x"FFFF" after 110 ns, x"0000" after 130 ns;
+fifo_empty_n_rcv<= '1' after 30 ns, '0' after 70 ns, '1' after 130 ns;
+fifo_empty_s_rcv<= '1' after 30 ns;
+fifo_empty_e_rcv<= '1' after 30 ns;
+fifo_empty_w_rcv<= '1' after 30 ns;
 
 -- controle du read enable
 --rd_en_n <= '0', '1' after 410 ns, '0' after 450 ns;
